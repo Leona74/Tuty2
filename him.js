@@ -4,7 +4,7 @@ c.on("ready",_=>{
 	console.log('Woof!')
 	c.setStatus("away", "with your feelings")
 	console.log('Bark Woof Woof!')
-	
+	userID = c.user.id
 	c.on('message',m=>{
 		if( m.author != m.server.members.get("name","Blübot") ) {
 		x=m.cleanContent
@@ -12,7 +12,7 @@ c.on("ready",_=>{
 		content = m.content
 		content = content.replace("'s", "")
 			if(m.content === "c:help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who's a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\nc:help \nc:invite```")
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\nc:help \nc:invite```")
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
 			if(content.match("forum")) {
 				c.reply(m,`Hey there, our Forum URL is http://pxg-mta.de`)
@@ -76,6 +76,9 @@ c.on("ready",_=>{
 				c.reply(m,'*lies down*')
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
 			}
+			if(m.content == "<@"+ userID +">") {
+				c.reply(m,"Sup! use `c:help`!")
+				} 
 	}
 	})
 	c.on('serverNewMember',(x,y)=>{
