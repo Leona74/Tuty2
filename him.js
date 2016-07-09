@@ -101,8 +101,8 @@ c.on("ready",_=>{
 				c.banMember( m.mentions[0], m.server, banTime, function(err) {
 					if (err) console.log(err);
 					console.log("Banned " + m.mentions[0].username + ".");
-					c.sendMessage(m.channel, "User Banned!");
-					c.sendMessage(m.channel, "Deleted all Messages from "+banTime+" Days ago");
+					c.sendMessage(m.channel, "Banned!");
+					c.sendMessage(m.channel, "Deleted all Messages from "+banTime+" Days ago!");
 					console.log(m.content.split(' '[0]))
 				}) } else {
 			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
