@@ -77,7 +77,7 @@ c.on("ready",_=>{
 				c.reply(m,'*lies down*')
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
 			}
-			if(m.content == "<@"+ userID +">") {
+			if(content.match("<@"+ userID +">")) {
 				c.reply(m,"Sup! use `c:help`!")
 				} 
 			
