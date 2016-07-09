@@ -82,17 +82,17 @@ c.on("ready",_=>{
 				} 
 			
 			
-			if(m.content.split(' ')[0] == prefix+"setprefix") {
-				if (m.channel.permissionsOf(m.sender).hasPermission("manageServer")) {
-					newprefix = m.content.split(' ')[1]
-					
-				console.log(m.sender.name+" set the prefix to"+ newprefix)
-				prefix=newprefix
-				c.sendMessage(m,"Successfully set Prefix to "+newprefix)
-				
-				
-			}
-			}
+--			if(m.content.split(' ')[0] == prefix+"setprefix") {
+--				if (m.channel.permissionsOf(m.sender).hasPermission("manageServer")) {
+--					newprefix = m.content.split(' ')[1]
+--					
+--				console.log(m.sender.name+" set the prefix to"+ newprefix)
+--				prefix=newprefix
+--				c.sendMessage(m,"Successfully set Prefix to "+newprefix)
+--				
+--				
+--			}
+--			}
 				
 				
 				
@@ -109,20 +109,20 @@ c.on("ready",_=>{
 			}			
 			
 			
---			if (m.content.split(' ')[0] == prefix+"ban") {
---				if (m.channel.permissionsOf(m.sender).hasPermission("banMembers")) {
---					banTime=m.content.split(' ')[2]
---					if (banTime = null) {banTime=0} 
---				c.banMember( m.mentions[0], m.server, banTime, function(err) {
---					if (err) console.log(err);
---					console.log("Banned " + m.mentions[0].username + ".");
---					c.sendMessage(m.channel, "Banned!");
---					c.sendMessage(m.channel, "Deleted all Messages from "+banTime+" Days ago!");
---					console.log(m.content.split(' '[0]))
---				}) } else {
---			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
---			}
---			}			
+			if (m.content.split(' ')[0] == prefix+"ban") {
+				if (m.channel.permissionsOf(m.sender).hasPermission("banMembers")) {
+					banTime=m.content.split(' ')[2]
+					if (banTime = null) {banTime=0} 
+				c.banMember( m.mentions[0], m.server, banTime, function(err) {
+					if (err) console.log(err);
+					console.log("Banned " + m.mentions[0].username + ".");
+					c.sendMessage(m.channel, "Banned!");
+					c.sendMessage(m.channel, "Deleted all Messages from "+banTime+" Days ago!");
+					console.log(m.content.split(' '[0]))
+				}) } else {
+			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
+			}
+			}			
 			
 			
 	}
