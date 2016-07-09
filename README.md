@@ -10,7 +10,11 @@ Invite Link: https://discordapp.com/oauth2/authorize?&client_id=2006625810424791
 The Commands are:
 
 c:help - Command listing
+
 c:kick - Kick User
+
 c:ban - Ban User
+
 c:invite - Display Invite Link
+
 
