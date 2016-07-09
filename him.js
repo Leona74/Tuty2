@@ -1,6 +1,6 @@
 Discord=require("discord.js")
 c=new Discord.Client()
-prefix='-'
+prefix='c:'
 
 
 c.on("ready",_=>{
