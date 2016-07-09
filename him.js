@@ -65,8 +65,6 @@ c.on("ready",_=>{
 			if(content.match("bark")) {
 				c.reply(m,`bark bark bark bark!!`)
 				}	
-			if(m.content === prefix+"invite")
-				c.reply(m,"Invite me to another server using this link: https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
 			if(m.content === "fetch!")
 			c.reply(m,"*Looks at you confused*")
 			if(m.content === "fetch ball!")
