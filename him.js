@@ -79,6 +79,18 @@ c.on("ready",_=>{
 			if(m.content == "<@"+ userID +">") {
 				c.reply(m,"Sup! use `c:help`!")
 				} 
+			
+			
+			if (m.content.split(' ')[0] == "c:kick") {
+				if (m.channel.permissionsOf(m.sender).hasPermission("kickMembers")) {
+				c.kickMember( m.mentions[0], m.server, function(err) {
+					if (err) console.log(err);
+					console.log("Kicked " + m.mentions[0].username + ".");
+					c.sendMessage(m.channel, "User kicked.");
+				}) } else {
+			c.sendMessage(m.channel, "You don't have permission to kick.");
+			}
+			}			
 	}
 	})
 	c.on('serverNewMember',(x,y)=>{
