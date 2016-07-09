@@ -11,8 +11,9 @@ c.on("ready",_=>{
 		m.content = m.content.toLowerCase()
 		content = m.content
 		content = content.replace("'s", "")
-			if(m.content === "c:help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\nc:help \nc:invite```")
+		if(m.content === "c:help")
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\nc:help \nc:invite \nc:kick [USER] \nc:ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] ```")
+		
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
 			if(content.match("forum")) {
 				c.reply(m,`Hey there, our Forum URL is http://pxg-mta.de`)
@@ -86,11 +87,29 @@ c.on("ready",_=>{
 				c.kickMember( m.mentions[0], m.server, function(err) {
 					if (err) console.log(err);
 					console.log("Kicked " + m.mentions[0].username + ".");
-					c.sendMessage(m.channel, "User kicked.");
+					c.sendMessage(m.channel, "Bye Bye!");
 				}) } else {
-			c.sendMessage(m.channel, "You don't have permission to kick.");
+			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
 			}
 			}			
+			
+			
+			if (m.content.split(' ')[0] == "c:ban") {
+				if (m.channel.permissionsOf(m.sender).hasPermission("banMembers")) {
+					banTime=m.content.split(' ')[2]
+					if (banTime = null) {banTime=0} 
+				c.banMember( m.mentions[0], m.server, banTime, function(err) {
+					if (err) console.log(err);
+					console.log("Banned " + m.mentions[0].username + ".");
+					c.sendMessage(m.channel, "User Banned!");
+					c.sendMessage(m.channel, "Deleted all Messages from "+banTime+" Days ago");
+					console.log(m.content.split(' '[0]))
+				}) } else {
+			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
+			}
+			}		
+			
+			
 	}
 	})
 	c.on('serverNewMember',(x,y)=>{
