@@ -1,5 +1,8 @@
 Discord=require("discord.js")
 c=new Discord.Client()
+prefix='-'
+
+
 c.on("ready",_=>{
 	console.log('Woof!')
 	c.setStatus("away", "with your feelings")
@@ -11,8 +14,8 @@ c.on("ready",_=>{
 		m.content = m.content.toLowerCase()
 		content = m.content
 		content = content.replace("'s", "")
-		if(m.content === "c:help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\nc:help \nc:invite \nc:kick [USER] \nc:ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] ```")
+		if(m.content === prefix+"help")
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] ```")
 		
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
 			if(content.match("forum")) {
@@ -62,11 +65,8 @@ c.on("ready",_=>{
 			if(content.match("bark")) {
 				c.reply(m,`bark bark bark bark!!`)
 				}	
-			if(m.content === "c:invite")
+			if(m.content === prefix+"invite")
 				c.reply(m,"Invite me to another server using this link: https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
-			if(m.content === "c:test") {
-			c.sendMessage(m,"Blübot greets you!")	
-			}
 			if(m.content === "fetch!")
 			c.reply(m,"*Looks at you confused*")
 			if(m.content === "fetch ball!")
@@ -78,11 +78,26 @@ c.on("ready",_=>{
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
 			}
 			if(content.match("<@"+ userID +">")) {
-				c.reply(m,"Sup! use `c:help`!")
+				c.reply(m,"Sup! use `"+ prefix+"help")
 				} 
 			
 			
-			if (m.content.split(' ')[0] == "c:kick") {
+			if(m.content.split(' ')[0] == prefix+"setprefix") {
+				if (m.channel.permissionsOf(m.sender).hasPermission("manageServer")) {
+					newprefix = m.content.split(' ')[1]
+					
+				console.log(m.sender.name+" set the prefix to"+ newprefix)
+				prefix=newprefix
+				c.sendMessage(m,"Successfully set Prefix to "+newprefix)
+				
+				
+			}
+			}
+				
+				
+				
+				
+			if (m.content.split(' ')[0] == prefix+"kick") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("kickMembers")) {
 				c.kickMember( m.mentions[0], m.server, function(err) {
 					if (err) console.log(err);
@@ -94,7 +109,7 @@ c.on("ready",_=>{
 			}			
 			
 			
-			if (m.content.split(' ')[0] == "c:ban") {
+			if (m.content.split(' ')[0] == prefix+"ban") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("banMembers")) {
 					banTime=m.content.split(' ')[2]
 					if (banTime = null) {banTime=0} 
@@ -107,7 +122,7 @@ c.on("ready",_=>{
 				}) } else {
 			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
 			}
-			}		
+			}			
 			
 			
 	}
