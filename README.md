@@ -1,7 +1,7 @@
 # Blubot
 A bot that wants to be a dog so badly
 
-This bot is a Dog! You can Order it to do different things such as "sit!" "stand up!" "rolL" "lay down" and "fetch!"
+This bot is a Dog! You can Order it to do different things such as "sit!" "stand up!" "roll!" "lay down" and "fetch!"
 
 It can also respond to "Who is a good dog?" and "do you want a treat?"
 
