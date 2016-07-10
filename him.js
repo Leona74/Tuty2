@@ -104,7 +104,7 @@ c.on("ready",_=>{
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
 			}
 			if(content.match("<@"+ userID +">")) {
-				c.reply(m,"Sup! use `"+ prefix+"help")
+				c.reply(m,"Sup! use `"+ prefix+"help`")
 				} 
 			
 			
