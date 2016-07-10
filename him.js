@@ -1,6 +1,7 @@
 Discord=require("discord.js")
 c=new Discord.Client()
 prefix='c:'
+var mutedUsers = [ ]
 
 
 c.on("ready",_=>{
@@ -8,14 +9,41 @@ c.on("ready",_=>{
 	c.setStatus("away", "with your feelings")
 	console.log('Bark Woof Woof!')
 	userID = c.user.id
+	
+		function muteUser(user) {
+	mutedUsers.push(user)
+	}
+	
+	
+	function unmuteUser(user) {
+		console.log("umute recieved")
+		for(var i = mutedUsers.length; i--;){
+	if (mutedUsers[i] === user) mutedUsers.splice(i, 1);
+	}
+	}
+	
+	
 	c.on('message',m=>{
+		
+		mutedUsers.forEach(checkMuted)
+		
+				function checkMuted(item,index) {
+	if ( m.sender.id == item.id ) {
+		c.deleteMessage(m,30,
+		function err(error) {
+			if (error) {
+		console.log(error)
+}
+		})
+	}}
+		
 		if( m.author != m.server.members.get("name","Blübot") ) {
 		x=m.cleanContent
 		m.content = m.content.toLowerCase()
 		content = m.content
 		content = content.replace("'s", "")
 		if(m.content === prefix+"help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] ```")
+				c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] ```")
 		
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
 			if(content.match("forum")) {
@@ -93,6 +121,28 @@ c.on("ready",_=>{
 --			}
 				
 				
+						if(m.content.split(' ')[0] == prefix+"mute") {
+				if (m.channel.permissionsOf(m.sender).hasPermission("managePermissions")) {
+				mutedUser = m.mentions[0]
+				c.sendMessage(m,"User Silenced!")
+				console.log(m.sender.name+" muted "+ mutedUser)
+				muteUser(mutedUser)
+				
+			}
+			}
+
+			
+			if(m.content.split(' ')[0] == prefix+"unmute") {
+				if (m.channel.permissionsOf(m.sender).hasPermission("managePermissions")) {
+				unmutedUser = m.mentions[0]
+				c.sendMessage(m,"User Unsilenced!")
+				console.log(m.sender.name+" unmuted "+ unmutedUser)
+				unmuteUser(unmutedUser)
+				
+			}
+			}
+			
+			
 				
 				
 			if (m.content.split(' ')[0] == prefix+"kick") {
