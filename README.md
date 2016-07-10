@@ -18,3 +18,5 @@ c:invite - Display Invite Link
 c:mute - Mute User
 
 c:unmute - Unmute User
+
+c:cleanup - Cleanup Chatlogs
