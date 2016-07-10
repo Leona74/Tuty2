@@ -66,7 +66,7 @@ c.on("ready",_=>{
 			if(content.match("wants a treat")) {
 				c.reply(m,"ME ME ME ME")
 			return}
-			if(content.match === "yes you are!"){
+			if(content.match("yes you are")){
 				c.reply(m,`^w^`)
 			return}
 			if(content === "sit!") {
