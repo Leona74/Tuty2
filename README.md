@@ -15,4 +15,6 @@ c:ban - Ban User
 
 c:invite - Display Invite Link
 
+c:mute - Mute User
 
+c:unmute - Unmute User
