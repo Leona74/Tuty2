@@ -43,8 +43,7 @@ c.on("ready",_=>{
 		content = m.content
 		content = content.replace("'s", "")
 		if(m.content === prefix+"help")
-				c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] ```")
-		
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] ```")
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
 			if(content.match("forum")) {
 				c.reply(m,`Hey there, our Forum URL is http://pxg-mta.de`)
@@ -159,7 +158,40 @@ c.on("ready",_=>{
 			}
 			}
 			
+			if(m.content.split(' ')[0] == prefix+"cleanup") {
+				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
+					lmsg = m.channel.lastMessage
+					chnel = m.channel
+					cleanuprepeat = 1
+					cleanuprepeat = m.content.split(' ')[1]
+					if(!cleanuprepeat)  {
+						cleanuprepeat =1						
+					}
+					if (cleanuprepeat >= 50) {
+						cleanuprepeat = 50
+					}
 			
+		c.getChannelLogs(chnel,cleanuprepeat, function resmsgerr(error,messages)
+		{
+		delLogs(messages)
+		if (err) {
+		console.log(err)
+		}
+		})
+	function delLogs(item,index) {
+		c.deleteMessages(item,
+		function err(error) {
+			if (error) {
+		console.log(error)
+				}
+			})
+		}
+	}		
+}
+
+		
+				
+				
 				
 				
 			if (m.content.split(' ')[0] == prefix+"kick") {
