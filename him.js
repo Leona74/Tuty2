@@ -51,61 +51,78 @@ c.on("ready",_=>{
 			}
 		}
 				console.log(m.author.name + ": " +content)
-			if(content.match == "who a good dog") {
-			c.reply(m,`I AM!!!!!`) }
-			if(content.match("who is a good dog"))
+			if(content.match("who's a good dog")) {
+			c.reply(m,`I AM!!!!!`) 
+			return}
+			if(content.match("who is a good dog")) {
 				c.reply(m,`I AM!!!!!`)
-			if(content.match("good night"))
+			return}
+			if(content.match("good night")){
 				c.sendMessage(m,`Sweet Dreams!`)
-			if(content.match("you want a treat"))
+			return}
+			if(content.match("you want a treat")) {
 				c.reply(m,`YES YES YES YES YES`)
-			if(content.match("wants a treat"))
+			return}
+			if(content.match("wants a treat")) {
 				c.reply(m,"ME ME ME ME")
-			if(content.match === "yes you are!")
+			return}
+			if(content.match === "yes you are!"){
 				c.reply(m,`^w^`)
+			return}
 			if(content === "sit!") {
 				c.reply(m,'*sits down*')
-				c.sendMessage(m,'http://thumbs.dreamstime.com/z/shiba-inu-sits-white-background-puppy-49353113.jpg') }
+				c.sendMessage(m,'http://thumbs.dreamstime.com/z/shiba-inu-sits-white-background-puppy-49353113.jpg') 
+			return}
 			if(content === "roll!") {
 				c.reply(m,'*rolls over*')
-				c.sendMessage(m,'https://img.buzzfeed.com/buzzfeed-static/static/2015-01/7/20/enhanced/webdr10/enhanced-30407-1420679140-11.jpg') }
+				c.sendMessage(m,'https://img.buzzfeed.com/buzzfeed-static/static/2015-01/7/20/enhanced/webdr10/enhanced-30407-1420679140-11.jpg') 
+			return}
 			if(content === "roll over!") {
 				c.reply(m,'*rolls over*')
-				c.sendMessage(m,'https://img.buzzfeed.com/buzzfeed-static/static/2015-01/7/20/enhanced/webdr10/enhanced-30407-1420679140-11.jpg') }
+				c.sendMessage(m,'https://img.buzzfeed.com/buzzfeed-static/static/2015-01/7/20/enhanced/webdr10/enhanced-30407-1420679140-11.jpg') 
+			return}
 			if(content === "stand up!") {
 				c.reply(m,'*stands up*')
-				c.sendMessage(m,'http://www.dogs-wallpapers.com/user-content/uploads/wall/o/86/shiba_inu_dog_on_leash_wallpaper.jpg') }
-			if(content.match === "i love dogs")
+				c.sendMessage(m,'http://www.dogs-wallpapers.com/user-content/uploads/wall/o/86/shiba_inu_dog_on_leash_wallpaper.jpg') 
+			return}
+			if(content.match === "i love dogs"){
 				c.reply(m,`i love you too!`)
+			return}
 			if(content.match === "whats my name?") {
 				c.reply(m,`ohhh i'm gonna spell it out for you...`)
 				c.reply(m,`https://wtfbabe.files.wordpress.com/2016/05/deadpool-43-sc-ima-spell-it-out-for-ya-wtf-watch-the-film-saint-pauly.jpg` )
-			}
+			return}
 			if(content.match("meow")) {
 				c.reply(m,`Woof woof Woof woof woof woof woof!`)
-				}
+			return}
 			if(content.match("woof")) {
 				c.reply(m,`woof!`)
-				}
+			return}
 			if(content.match("miau")) {
 				c.reply(m,`Woof woof Woof woof woof woof woof!`)
-				}
+			return}
 			if(content.match("bark")) {
 				c.reply(m,`bark bark bark bark!!`)
-				}	
-			if(m.content === "fetch!")
-			c.reply(m,"*Looks at you confused*")
-			if(m.content === "fetch ball!")
-			c.reply(m,"*fetches ball*")
-			if(content.match("who is a cute"))
+			return}	
+			if(m.content === prefix+"invite") {
+				c.reply(m,"Invite me to another server using this link: https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
+			return}
+			if(m.content === "fetch!") {
+				c.reply(m,"*Looks at you confused*")
+			return}
+			if(m.content === "fetch ball!"){
+				c.reply(m,"*fetches ball*")
+			return}
+			if(content.match("who is a cute")) {
 				c.reply(m,`I AM!!!!!`)
+			return}
 			if(content === "lay down!") {
 				c.reply(m,'*lies down*')
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
-			}
+			return}
 			if(content.match("<@"+ userID +">")) {
 				c.reply(m,"Sup! use `"+ prefix+"help`")
-				} 
+			}  
 			
 			
 --			if(m.content.split(' ')[0] == prefix+"setprefix") {
