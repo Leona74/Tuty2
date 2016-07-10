@@ -41,7 +41,6 @@ c.on("ready",_=>{
 		x=m.cleanContent
 		m.content = m.content.toLowerCase()
 		content = m.content
-		content = content.replace("'s", "")
 		if(m.content === prefix+"help")
 		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] ```")
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
@@ -119,9 +118,7 @@ c.on("ready",_=>{
 				c.reply(m,'*lies down*')
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
 			return}
-			if(content.match("<@"+ userID +">")) {
-				c.reply(m,"Sup! use `"+ prefix+"help`")
-			}  
+
 			
 			
 --			if(m.content.split(' ')[0] == prefix+"setprefix") {
@@ -140,11 +137,15 @@ c.on("ready",_=>{
 						if(m.content.split(' ')[0] == prefix+"mute") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("managePermissions")) {
 				mutedUser = m.mentions[0]
+			if(mutedUser == "<@"+userID+">") {
+				c.sendMessage(m,"You can't mute me, silly!")	
+			return}
 				c.sendMessage(m,"User Silenced!")
 				console.log(m.sender.name+" muted "+ mutedUser)
 				muteUser(mutedUser)
 				
 			}
+			return
 			}
 
 			
@@ -156,6 +157,7 @@ c.on("ready",_=>{
 				unmuteUser(unmutedUser)
 				
 			}
+			return
 			}
 			
 			if(m.content.split(' ')[0] == prefix+"cleanup") {
@@ -203,6 +205,7 @@ c.on("ready",_=>{
 				}) } else {
 			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
 			}
+			return
 			}			
 			
 			
@@ -219,8 +222,12 @@ c.on("ready",_=>{
 				}) } else {
 			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
 			}
-			}			
+			return
+			}	
 			
+			if(content.match("<@"+ userID +">")) {
+				c.reply(m,"Sup! use `"+ prefix+"help`")
+			}  
 			
 	}
 	})
