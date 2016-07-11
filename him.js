@@ -157,17 +157,17 @@ c.on("ready",_=>{
 
 			
 			
---			if(m.content.split(' ')[0] == prefix+"setprefix") {
---				if (m.channel.permissionsOf(m.sender).hasPermission("manageServer")) {
---					newprefix = m.content.split(' ')[1]
---					
---				console.log(m.sender.name+" set the prefix to"+ newprefix)
---				prefix=newprefix
---				c.sendMessage(m,"Successfully set Prefix to "+newprefix)
---				
---				
---			}
---			}
+//			if(m.content.split(' ')[0] == prefix+"setprefix") {
+//				if (m.channel.permissionsOf(m.sender).hasPermission("manageServer")) {
+//					newprefix = m.content.split(' ')[1]
+//					
+//				console.log(m.sender.name+" set the prefix to"+ newprefix)
+//				prefix=newprefix
+//				c.sendMessage(m,"Successfully set Prefix to "+newprefix)
+//				
+//				
+//			}
+//			}
 				
 				
 						if(m.content.split(' ')[0] == prefix+"mute") {
@@ -274,6 +274,7 @@ c.on("ready",_=>{
 				c.reply(m,"Sup! use `"+ prefix+"help`")
 			}  
 			
+	}
 	}
 	})
 	c.on('serverNewMember',(x,y)=>{
