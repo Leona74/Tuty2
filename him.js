@@ -2,6 +2,10 @@ Discord=require("discord.js")
 c=new Discord.Client()
 prefix='c:'
 var mutedUsers = [ ]
+var upSecs = 0
+var upMins = 0
+var upHours = 0
+var upDays = 0
 
 
 c.on("ready",_=>{
@@ -9,6 +13,26 @@ c.on("ready",_=>{
 	c.setStatus("away", "with your feelings")
 	console.log('Bark Woof Woof!')
 	userID = c.user.id
+	
+	setInterval( function() {
+		upSecs = upSecs + 1
+		if (upSecs >= 60) {
+			upMins = upMins + 1		
+		} 
+		if (upMins >= 60) {
+			upHours = upHours + 1
+		}
+		if (upHours >= 24) {
+			upDays = upDays + 1
+			
+		}
+		
+		
+	},1000)
+	
+	
+	
+	
 	
 		function muteUser(user) {
 	mutedUsers.push(user)
@@ -41,6 +65,10 @@ c.on("ready",_=>{
 		x=m.cleanContent
 		m.content = m.content.toLowerCase()
 		content = m.content
+		if(m.content === prefix+"uptime"){
+		c.reply(m, "```Current Uptime: \n"+upDays+" Days \n"+upHours+" Hours \n"+upMins+" Minutes \n"+upSecs+" Seconds```")
+		}
+		
 		if(m.content === prefix+"help")
 		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] ```")
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
