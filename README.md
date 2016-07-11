@@ -20,3 +20,5 @@ c:mute - Mute User
 c:unmute - Unmute User
 
 c:cleanup - Cleanup Chatlogs
+
+c:uptime - View bot uptime
