@@ -68,6 +68,7 @@ c.on("ready",_=>{
 		x=m.cleanContent
 		m.content = m.content.toLowerCase()
 		content = m.content
+		fetchm = m.content.replace("!", "")
 		if(m.content === prefix+"uptime"){
 		c.reply(m, "```Current Uptime: \n"+upDays+" Days \n"+upHours+" Hours \n"+upMins+" Minutes \n"+upSecs+" Seconds```")
 		}
@@ -136,12 +137,16 @@ c.on("ready",_=>{
 			if(m.content === prefix+"invite") {
 				c.reply(m,"Invite me to another server using this link: https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
 			return}
-			if(m.content === "fetch!") {
+			if(fetchm.split(' ')[0] == "fetch") {
+
+			 if(!fetchm.split(' ')[1]) {
 				c.reply(m,"*Looks at you confused*")
-			return}
-			if(m.content === "fetch ball!"){
-				c.reply(m,"*fetches ball*")
-			return}
+				}
+			else
+			{  		
+			c.reply(m,"*fetches "+fetchm.split(' ')[1]+"*")		
+			}
+			return
 			if(content.match("who is a cute")) {
 				c.reply(m,`I AM!!!!!`)
 			return}
