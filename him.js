@@ -147,6 +147,7 @@ c.on("ready",_=>{
 			c.reply(m,"*fetches "+fetchm.split(' ')[1]+"*")		
 			}
 			return
+			}
 			if(content.match("who is a cute")) {
 				c.reply(m,`I AM!!!!!`)
 			return}
@@ -274,7 +275,6 @@ c.on("ready",_=>{
 				c.reply(m,"Sup! use `"+ prefix+"help`")
 			}  
 			
-	}
 	}
 	})
 	c.on('serverNewMember',(x,y)=>{
