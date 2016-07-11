@@ -17,12 +17,15 @@ c.on("ready",_=>{
 	setInterval( function() {
 		upSecs = upSecs + 1
 		if (upSecs >= 60) {
+			upSecs = 0
 			upMins = upMins + 1		
 		} 
 		if (upMins >= 60) {
+			upMins = 0
 			upHours = upHours + 1
 		}
 		if (upHours >= 24) {
+			upHours = 0
 			upDays = upDays + 1
 			
 		}
