@@ -166,7 +166,7 @@ c.on("ready",_=>{
 				
 				
 						if(m.content.split(' ')[0] == prefix+"mute") {
-				if (m.channel.permissionsOf(m.sender).hasPermission("managePermissions")) {
+				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
 				mutedUser = m.mentions[0]
 			if(mutedUser == "<@"+userID+">") {
 				c.sendMessage(m,"You can't mute me, silly!")	
@@ -176,16 +176,25 @@ c.on("ready",_=>{
 				muteUser(mutedUser)
 				
 			}
+			else
+			{
+				c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( expected manageMessages )");
+			}
 			return
 			}
 
 			
 			if(m.content.split(' ')[0] == prefix+"unmute") {
-				if (m.channel.permissionsOf(m.sender).hasPermission("managePermissions")) {
+				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
 				unmutedUser = m.mentions[0]
 				c.sendMessage(m,"User Unsilenced!")
 				console.log(m.sender.name+" unmuted "+ unmutedUser)
 				unmuteUser(unmutedUser)
+				
+			}
+			else
+			{
+				c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( expected manageMessages )");
 				
 			}
 			return
