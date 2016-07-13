@@ -217,6 +217,10 @@ c.on("ready",_=>{
 			
 			if(content.split(' ')[0] == prefix+"mute") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
+				if(!m.mentions[0]) {
+					c.sendMessage(m.channel, "Missing User!");
+					return
+				}	
 				mutedUser = m.mentions[0]
 				if(mutedUser == "<@"+userID+">") {
 				c.sendMessage(m,"You can't mute me, silly!")	
@@ -236,6 +240,10 @@ c.on("ready",_=>{
 			
 			if(content.split(' ')[0] == prefix+"unmute") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
+				if(!m.mentions[0]) {
+					c.sendMessage(m.channel, "Missing User!");
+					return
+				}	
 				unmutedUser = m.mentions[0]
 				c.sendMessage(m,"User Unsilenced!")
 				console.log(m.sender.name+" unmuted "+ unmutedUser)
@@ -289,6 +297,11 @@ c.on("ready",_=>{
 				
 			if (content.split(' ')[0] == prefix+"kick") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("kickMembers")) {
+				if(!m.mentions[0]) {
+					c.sendMessage(m.channel, "Missing User!");
+					return
+				}	
+					
 				c.kickMember( m.mentions[0], m.server, function(err) {
 					if (err) console.log(err);
 					console.log("Kicked " + m.mentions[0].username + ".");
@@ -302,8 +315,13 @@ c.on("ready",_=>{
 			
 			if (content.split(' ')[0] == prefix+"ban") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("banMembers")) {
-					banTime=content.split(' ')[2]
-					if (banTime = null) {banTime=0} 
+					banTime=content.split(' ')[2]					
+					if (banTime = null) {banTime=0}
+
+				if(!m.mentions[0]) {
+					c.sendMessage(m.channel, "Missing User!");
+					return
+				}						
 				c.banMember( m.mentions[0], m.server, banTime, function(err) {
 					if (err) console.log(err);
 					console.log("Banned " + m.mentions[0].username + ".");
