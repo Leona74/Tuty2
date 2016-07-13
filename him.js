@@ -79,7 +79,7 @@ c.on("ready",_=>{
 		
 		
 				mlow = content
-			if( (mlow.split(' ')[0] == "call") || (mlow.split(' ')[1] == "me")) {
+			if( (mlow.split(' ')[0] == "call") && (mlow.split(' ')[1] == "me")) {
 				if (m.channel.permissionsOf(m.sender).hasPermission("changeNickname")) {
 				n1 = m.content.substring(8)
 				oldname = m.sender.username
