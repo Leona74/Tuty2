@@ -1,12 +1,11 @@
 Discord=require("discord.js")
 c=new Discord.Client()
-prefix='c:'
+var prefix='c:'
 var mutedUsers = [ ]
 var upSecs = 0
 var upMins = 0
 var upHours = 0
 var upDays = 0
-
 
 c.on("ready",_=>{
 	console.log('Woof!')
@@ -35,9 +34,7 @@ c.on("ready",_=>{
 	
 	
 	
-	
-	
-		function muteUser(user) {
+	function muteUser(user) {
 	mutedUsers.push(user)
 	}
 	
@@ -49,12 +46,12 @@ c.on("ready",_=>{
 	}
 	}
 	
-	
 	c.on('message',m=>{
 		
 		mutedUsers.forEach(checkMuted)
-		
-				function checkMuted(item,index) {
+
+
+		function checkMuted(item,index) {
 	if ( m.sender.id == item.id ) {
 		c.deleteMessage(m,30,
 		function err(error) {
@@ -63,18 +60,49 @@ c.on("ready",_=>{
 }
 		})
 	}}
-		
+
 		if( m.author != m.server.members.get("name","Blübot") ) {
 		x=m.cleanContent
-		m.content = m.content.toLowerCase()
-		content = m.content
-		fetchm = m.content.replace("!", "")
+	
+	
+	
+		content = m.content.toLowerCase()
+		fetchm = content.replace("!", "")
 		if(m.content === prefix+"uptime"){
 		c.reply(m, "```Current Uptime: \n"+upDays+" Days \n"+upHours+" Hours \n"+upMins+" Minutes \n"+upSecs+" Seconds```")
 		}
 		
-		if(m.content === prefix+"help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] ```")
+			if(content === prefix+"help")
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime	```")
+		
+		
+		
+		
+				mlow = content
+			if( (mlow.split(' ')[0] == "call") || (mlow.split(' ')[1] == "me")) {
+				if (m.channel.permissionsOf(m.sender).hasPermission("changeNickname")) {
+				n1 = m.content.substring(8)
+				oldname = m.sender.username
+					newname = n1
+				server = m.server
+				c.setNickname(server, newname+ " (" + oldname+ ")", m.sender, function(error){
+					if (error) {
+						console.log(error)
+						c.sendMessage(m,error)
+				}})
+				console.log(m.sender.name+" set his name to "+ newname)
+				c.sendMessage(m,"Set Nickname to "+newname)	
+			}
+			else 
+			{
+				c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( expected changeNickname )");
+			}
+			return
+			}
+		
+		
+		
+		
 		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
 			if(content.match("forum")) {
 				c.reply(m,`Hey there, our Forum URL is http://pxg-mta.de`)
@@ -134,20 +162,36 @@ c.on("ready",_=>{
 			if(content.match("bark")) {
 				c.reply(m,`bark bark bark bark!!`)
 			return}	
-			if(m.content === prefix+"invite") {
+			if(content === prefix+"invite") {
 				c.reply(m,"Invite me to another server using this link: https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
 			return}
 			if(fetchm.split(' ')[0] == "fetch") {
-
+				if(fetchm.split(' ')[1] == "bacon") {
+				c.reply(m,"*eats bacon*")
+				return
+			}
 			 if(!fetchm.split(' ')[1]) {
 				c.reply(m,"*Looks at you confused*")
+				return
 				}
 			else
-			{  		
-			c.reply(m,"*fetches "+fetchm.split(' ')[1]+"*")		
+			{  	
+			
+			c.reply(m,"*fetches "+m.content.substring(6)+"*")		
 			}
 			return
 			}
+			
+			
+			if(m.content.match("bacon?")) {
+			c.reply(m,"bacon!")
+			return}
+			
+			if(m.content.match("spam?")) {
+			c.reply(m,"spam!")
+			return}
+			
+			
 			if(content.match("who is a cute")) {
 				c.reply(m,`I AM!!!!!`)
 			return}
@@ -155,28 +199,28 @@ c.on("ready",_=>{
 				c.reply(m,'*lies down*')
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
 			return}
-
+			if(content === prefix+"servers") {
+				c.sendMessage(m,"I'm currently connected to "+c.servers.length+" Servers!")
+				}
 			
 			
-//			if(m.content.split(' ')[0] == prefix+"setprefix") {
+//			if(content.split(' ')[0] == prefix+"setprefix") {
 //				if (m.channel.permissionsOf(m.sender).hasPermission("manageServer")) {
-//					newprefix = m.content.split(' ')[1]
+//					newprefix = content.split(' ')[1]
 //					
 //				console.log(m.sender.name+" set the prefix to"+ newprefix)
 //				prefix=newprefix
-//				c.sendMessage(m,"Successfully set Prefix to "+newprefix)
-//				
-//				
+//				c.sendMessage(m,"Successfully set Prefix to "+newprefix)	
 //			}
+//			return
 //			}
-				
-				
-						if(m.content.split(' ')[0] == prefix+"mute") {
+			
+			if(content.split(' ')[0] == prefix+"mute") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
 				mutedUser = m.mentions[0]
-			if(mutedUser == "<@"+userID+">") {
+				if(mutedUser == "<@"+userID+">") {
 				c.sendMessage(m,"You can't mute me, silly!")	
-			return}
+				return}
 				c.sendMessage(m,"User Silenced!")
 				console.log(m.sender.name+" muted "+ mutedUser)
 				muteUser(mutedUser)
@@ -190,7 +234,7 @@ c.on("ready",_=>{
 			}
 
 			
-			if(m.content.split(' ')[0] == prefix+"unmute") {
+			if(content.split(' ')[0] == prefix+"unmute") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
 				unmutedUser = m.mentions[0]
 				c.sendMessage(m,"User Unsilenced!")
@@ -206,12 +250,12 @@ c.on("ready",_=>{
 			return
 			}
 			
-			if(m.content.split(' ')[0] == prefix+"cleanup") {
+			if(content.split(' ')[0] == prefix+"cleanup") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("manageMessages")) {
 					lmsg = m.channel.lastMessage
 					chnel = m.channel
 					cleanuprepeat = 1
-					cleanuprepeat = m.content.split(' ')[1]
+					cleanuprepeat = content.split(' ')[1]
 					if(!cleanuprepeat)  {
 						cleanuprepeat =1						
 					}
@@ -234,47 +278,52 @@ c.on("ready",_=>{
 				}
 			})
 		}
-	}		
-}
+	}
+}	
+
 
 		
 				
 				
 				
 				
-			if (m.content.split(' ')[0] == prefix+"kick") {
+			if (content.split(' ')[0] == prefix+"kick") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("kickMembers")) {
 				c.kickMember( m.mentions[0], m.server, function(err) {
 					if (err) console.log(err);
 					console.log("Kicked " + m.mentions[0].username + ".");
 					c.sendMessage(m.channel, "Bye Bye!");
 				}) } else {
-			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
+			c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( Expected kickMembers ) ");
 			}
 			return
 			}			
 			
 			
-			if (m.content.split(' ')[0] == prefix+"ban") {
+			if (content.split(' ')[0] == prefix+"ban") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("banMembers")) {
-					banTime=m.content.split(' ')[2]
+					banTime=content.split(' ')[2]
 					if (banTime = null) {banTime=0} 
 				c.banMember( m.mentions[0], m.server, banTime, function(err) {
 					if (err) console.log(err);
 					console.log("Banned " + m.mentions[0].username + ".");
 					c.sendMessage(m.channel, "Banned!");
 					c.sendMessage(m.channel, "Deleted all Messages from "+banTime+" Days ago!");
-					console.log(m.content.split(' '[0]))
+					console.log(content.split(' '[0]))
 				}) } else {
-			c.sendMessage(m.channel, "You dont have the right Permissions, sorry!");
+			c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( Expected banMembers )");
 			}
 			return
-			}	
-			
+			}			
+	
 			if(content.match("<@"+ userID +">")) {
 				c.reply(m,"Sup! use `"+ prefix+"help`")
-			}  
-			
+			return
+			} 
+
+	
+				
+	
 	}
 	})
 	c.on('serverNewMember',(x,y)=>{
