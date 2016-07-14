@@ -7,6 +7,7 @@ var weather = require('weather-js');
 }
 c=new Discord.Client()
 var prefix='c:'
+var prefixlength=2 // length of the prefix
 var mutedUsers = [ ]
 var upSecs = 0
 var upMins = 0
@@ -413,4 +414,4 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 		c.sendMessage(x.channels.get('name','welcome'),`Welcome ${y}! Read #rules to make sure you dont break any, please enjoy your stay here!`)
 })
 })
-c.loginWithToken("","","")
+c.loginWithToken("token","","")
