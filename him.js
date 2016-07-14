@@ -1,4 +1,8 @@
 Discord=require("discord.js")
+/* ONLY USE IF YOU WANT THE WEATHER FEATURES
+var jQuery=	require("jquery")
+var weather = require('weather-js');
+*/
 c=new Discord.Client()
 var prefix='c:'
 var mutedUsers = [ ]
@@ -76,6 +80,18 @@ c.on("ready",_=>{
 		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime	```")
 		
 		
+/*
+if( (content.split(' ')[0] == prefix+"weather")) {
+	loc = content.substring(9)
+	
+weather.find({search: loc, degreeType: 'C'}, function(err, result) {
+  if(err) c.sendMessage(m,err);
+ 
+ 
+ c.sendMessage(m, "Weather for: "+result[0].location.name+"\nTemperature: "+result[0].current.temperature+"°C\n"+result[0].current.skytext+"\nFeels like "+result[0].current.feelslike+"°C\n"+result[0].current.humidity+"% Humidity \nWind Speed: "+result[0].current.winddisplay)
+});
+}	
+*/
 		
 		
 				mlow = content
