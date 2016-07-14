@@ -1,8 +1,10 @@
 Discord=require("discord.js")
-/* ONLY USE IF YOU WANT THE WEATHER FEATURES
+var enableWeather = false
+
+if(enableWeather == true) {
 var jQuery=	require("jquery")
 var weather = require('weather-js');
-*/
+}
 c=new Discord.Client()
 var prefix='c:'
 var mutedUsers = [ ]
@@ -80,7 +82,11 @@ c.on("ready",_=>{
 		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime	```")
 		
 		
-/*
+		
+		
+if(enableWeather == true) {
+		
+
 if( (content.split(' ')[0] == prefix+"weather")) {
 	loc = content.substring(9)
 	if(!loc) {
@@ -95,8 +101,26 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
  c.sendMessage(m, "Weather for: "+result[0].location.name+"\nTemperature: "+result[0].current.temperature+"°C\n"+result[0].current.skytext+"\nFeels like "+result[0].current.feelslike+"°C\n"+result[0].current.humidity+"% Humidity \nWind Speed: "+result[0].current.winddisplay)
 });
 }	
-*/
+
+if( (content.split(' ')[0] == prefix+"forecast")) {
+loc = content.substring(10)
+	if(!loc) {
+		c.sendMessage(m,"You need to supply a City!")
+	return
+	}
+	
+weather.find({search: loc, degreeType: 'C'}, function(err, result) {
+  if(err) c.sendMessage(m,err);
+ 
+ 
+ c.sendMessage(m, "Weather forecast for: "+result[0].location.name+"\n`"+result[0].forecast[0].day+"`\nLow: "+result[0].forecast[0].low+"°C\nHigh: "+result[0].forecast[0].high+"°C\n"+result[0].forecast[0].skytextday+"\n\n`"+result[0].forecast[1].day+"`\nLow: "+result[0].forecast[1].low+"°C\nHigh: "+result[0].forecast[1].high+"°C\n"+result[0].forecast[1].skytextday+"\n\n`"+result[0].forecast[2].day+"`\nLow: "+result[0].forecast[2].low+"°C\nHigh: "+result[0].forecast[2].high+"°C\n"+result[0].forecast[2].skytextday+"\n\n`"+result[0].forecast[3].day+"`\nLow: "+result[0].forecast[3].low+"°C\nHigh: "+result[0].forecast[3].high+"°C\n"+result[0].forecast[3].skytextday )
+
+ 
+})
+}
 		
+		
+}
 		
 				mlow = content
 			if( (mlow.split(' ')[0] == "call") && (mlow.split(' ')[1] == "me")) {
