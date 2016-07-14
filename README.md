@@ -24,3 +24,5 @@ c:cleanup - Cleanup Chatlogs
 c:uptime - View bot uptime
 
 c:weather - OPTIONAL weather command
+
+c:forecast - OPTIONAL forecast command
