@@ -22,3 +22,5 @@ c:unmute - Unmute User
 c:cleanup - Cleanup Chatlogs
 
 c:uptime - View bot uptime
+
+c:weather - OPTIONAL weather command
