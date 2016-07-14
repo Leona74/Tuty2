@@ -80,30 +80,27 @@ c.on("ready",_=>{
 		
 			if(content === prefix+"help")
 		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime	```")
-		
-		
-		
+
 		
 if(enableWeather == true) {
-		
 
+	
 if( (content.split(' ')[0] == prefix+"weather")) {
-	loc = content.substring(9)
+	loc = content.substring(prefixlength+8)
 	if(!loc) {
 		c.sendMessage(m,"You need to supply a City!")
 	return
 	}
-	
 weather.find({search: loc, degreeType: 'C'}, function(err, result) {
   if(err) c.sendMessage(m,err);
  
  
- c.sendMessage(m, "Weather for: "+result[0].location.name+"\nTemperature: "+result[0].current.temperature+"°C\n"+result[0].current.skytext+"\nFeels like "+result[0].current.feelslike+"°C\n"+result[0].current.humidity+"% Humidity \nWind Speed: "+result[0].current.winddisplay)
+ c.sendMessage(m, "Weather for: "+result[0].location.name+"\nTemperature: "+result[0].current.temperature+"°C\nFeels like: "+result[0].current.feelslike+"°C\n"+result[0].current.skytext+"\n"+result[0].current.humidity+"% Humidity \nWind Speed: "+result[0].current.winddisplay)
 });
 }	
 
 if( (content.split(' ')[0] == prefix+"forecast")) {
-loc = content.substring(10)
+loc = content.substring(prefixlength+9)
 	if(!loc) {
 		c.sendMessage(m,"You need to supply a City!")
 	return
@@ -113,22 +110,40 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
   if(err) c.sendMessage(m,err);
  
  
- c.sendMessage(m, "Weather forecast for: "+result[0].location.name+"\n`"+result[0].forecast[0].day+"`\nLow: "+result[0].forecast[0].low+"°C\nHigh: "+result[0].forecast[0].high+"°C\n"+result[0].forecast[0].skytextday+"\n\n`"+result[0].forecast[1].day+"`\nLow: "+result[0].forecast[1].low+"°C\nHigh: "+result[0].forecast[1].high+"°C\n"+result[0].forecast[1].skytextday+"\n\n`"+result[0].forecast[2].day+"`\nLow: "+result[0].forecast[2].low+"°C\nHigh: "+result[0].forecast[2].high+"°C\n"+result[0].forecast[2].skytextday+"\n\n`"+result[0].forecast[3].day+"`\nLow: "+result[0].forecast[3].low+"°C\nHigh: "+result[0].forecast[3].high+"°C\n"+result[0].forecast[3].skytextday )
+ c.sendMessage(m, "Weather forecast for: "+result[0].location.name+"\n`"+result[0].forecast[1].day+"`\nLow: "+result[0].forecast[1].low+"°C\nHigh: "+result[0].forecast[1].high+"°C\n"+result[0].forecast[1].skytextday+"\n\n`"+result[0].forecast[2].day+"`\nLow: "+result[0].forecast[2].low+"°C\nHigh: "+result[0].forecast[2].high+"°C\n"+result[0].forecast[2].skytextday+"\n\n`"+result[0].forecast[3].day+"`\nLow: "+result[0].forecast[3].low+"°C\nHigh: "+result[0].forecast[3].high+"°C\n"+result[0].forecast[3].skytextday+"\n\n`"+result[0].forecast[4].day+"`\nLow: "+result[0].forecast[4].low+"°C\nHigh: "+result[0].forecast[4].high+"°C\n"+result[0].forecast[4].skytextday )
 
  
 })
 }
-		
-		
+
 }
 		
 				mlow = content
 			if( (mlow.split(' ')[0] == "call") && (mlow.split(' ')[1] == "me")) {
 				if (m.channel.permissionsOf(m.sender).hasPermission("changeNickname")) {
 				n1 = m.content.substring(8)
-				oldname = m.sender.username
-					newname = n1
 				server = m.server
+				oldname = m.sender.username
+				newname = n1
+				console.log(oldname)
+				console.log(newname)
+				if(oldname === newname) {
+					c.setNickname(server,oldname,m.sender, function(error){
+					if (error) {
+						//console.log(error)
+						c.sendMessage(m,error)
+					}
+				})
+				console.log(m.sender.name+" reset his name to "+ oldname)
+				c.sendMessage(m,"Set Nickname back to "+newname)	
+				return}
+
+
+				
+				
+				
+					
+				
 				c.setNickname(server, newname+ " (" + oldname+ ")", m.sender, function(error){
 					if (error) {
 						console.log(error)
@@ -139,7 +154,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			}
 			else 
 			{
-				c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( expected changeNickname )");
+				c.reply(m.channel, "You dont have the right Permissions, sorry! ( expected changeNickname )");
 			}
 			return
 			}
@@ -264,7 +279,8 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 				if(!m.mentions[0]) {
 					c.sendMessage(m.channel, "Missing User!");
 					return
-				}	
+				}						
+					
 				mutedUser = m.mentions[0]
 				if(mutedUser == "<@"+userID+">") {
 				c.sendMessage(m,"You can't mute me, silly!")	
@@ -276,7 +292,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			}
 			else
 			{
-				c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( expected manageMessages )");
+				c.reply(m.channel, "You dont have the right Permissions, sorry! ( expected manageMessages )");
 			}
 			return
 			}
@@ -296,7 +312,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			}
 			else
 			{
-				c.sendMessage(m.channel, "You dont have the right Permissions, sorry! ( expected manageMessages )");
+				c.reply(m.channel, "You dont have the right Permissions, sorry! ( expected manageMessages )");
 				
 			}
 			return
@@ -341,6 +357,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 				
 			if (content.split(' ')[0] == prefix+"kick") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("kickMembers")) {
+					
 				if(!m.mentions[0]) {
 					c.sendMessage(m.channel, "Missing User!");
 					return
@@ -359,13 +376,14 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			
 			if (content.split(' ')[0] == prefix+"ban") {
 				if (m.channel.permissionsOf(m.sender).hasPermission("banMembers")) {
-					banTime=content.split(' ')[2]					
-					if (banTime = null) {banTime=0}
-
+					banTime=content.split(' ')[2]
+					if (banTime = null) {banTime=0} 
+					
 				if(!m.mentions[0]) {
 					c.sendMessage(m.channel, "Missing User!");
 					return
-				}						
+				}	
+					
 				c.banMember( m.mentions[0], m.server, banTime, function(err) {
 					if (err) console.log(err);
 					console.log("Banned " + m.mentions[0].username + ".");
@@ -395,4 +413,4 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 		c.sendMessage(x.channels.get('name','welcome'),`Welcome ${y}! Read #rules to make sure you dont break any, please enjoy your stay here!`)
 })
 })
-c.loginWithToken("token","","")
+c.loginWithToken("","","")
