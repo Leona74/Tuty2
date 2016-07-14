@@ -83,6 +83,10 @@ c.on("ready",_=>{
 /*
 if( (content.split(' ')[0] == prefix+"weather")) {
 	loc = content.substring(9)
+	if(!loc) {
+		c.sendMessage(m,"You need to supply a City!")
+	return
+	}
 	
 weather.find({search: loc, degreeType: 'C'}, function(err, result) {
   if(err) c.sendMessage(m,err);
