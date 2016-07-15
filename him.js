@@ -1,9 +1,13 @@
 Discord=require("discord.js")
-var enableWeather = false
+var enableOptional = false
 
-if(enableWeather == true) {
+if(enableOptional == true) {
 var jQuery=	require("jquery")
 var weather = require('weather-js');
+var catNames = require('cat-names');
+var dogNames = require('dog-names');
+var catFacts = require('cat-facts');
+var magnet = require('magnet-uri');
 }
 c=new Discord.Client()
 var prefix='c:'
@@ -83,7 +87,7 @@ c.on("ready",_=>{
 		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime	```")
 
 		
-if(enableWeather == true) {
+if(enableOptional == true) {
 
 	
 if( (content.split(' ')[0] == prefix+"weather")) {
@@ -106,16 +110,39 @@ loc = content.substring(prefixlength+9)
 		c.sendMessage(m,"You need to supply a City!")
 	return
 	}
-	
 weather.find({search: loc, degreeType: 'C'}, function(err, result) {
   if(err) c.sendMessage(m,err);
- 
- 
  c.sendMessage(m, "Weather forecast for: "+result[0].location.name+"\n`"+result[0].forecast[1].day+"`\nLow: "+result[0].forecast[1].low+"°C\nHigh: "+result[0].forecast[1].high+"°C\n"+result[0].forecast[1].skytextday+"\n\n`"+result[0].forecast[2].day+"`\nLow: "+result[0].forecast[2].low+"°C\nHigh: "+result[0].forecast[2].high+"°C\n"+result[0].forecast[2].skytextday+"\n\n`"+result[0].forecast[3].day+"`\nLow: "+result[0].forecast[3].low+"°C\nHigh: "+result[0].forecast[3].high+"°C\n"+result[0].forecast[3].skytextday+"\n\n`"+result[0].forecast[4].day+"`\nLow: "+result[0].forecast[4].low+"°C\nHigh: "+result[0].forecast[4].high+"°C\n"+result[0].forecast[4].skytextday )
-
- 
 })
 }
+
+	if( (content.split(' ')[0] == prefix+"catname")) {
+		name = catNames.random()
+	c.sendMessage(m,name)
+	}
+	
+	if( (content.split(' ')[0] == prefix+"dogname")) {
+		name = dogNames.allRandom()
+	c.sendMessage(m,name)
+	}
+	
+	if( (content.split(' ')[0] == prefix+"catfact")) {
+		fact = catFacts.random()
+	c.sendMessage(m,fact)
+	}
+
+
+	if( (content.split(' ')[0].match("magnet:"))) {
+		uri = content.split(' ')[0]
+		var parsed = magnet.decode(uri)
+		c.sendMessage(m, "`Magnet Name: "+parsed.name+"\nHash: "+parsed.infoHash+"`")
+		
+		
+	}
+
+	
+	
+
 
 }
 		
