@@ -26,3 +26,11 @@ c:uptime - View bot uptime
 c:weather - OPTIONAL weather command
 
 c:forecast - OPTIONAL forecast command
+
+c:catname - OPTIONAL Random Cat name
+
+c:dogname - OPTIONAL Random Dog name
+
+c:catfact - Fact about cats
+
+
