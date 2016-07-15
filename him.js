@@ -19,6 +19,10 @@ var upMins = 0
 var upHours = 0
 var upDays = 0
 
+process.on('uncaughtException', (err) => {
+  console.log(`Caught exception: ${err}`);
+});
+
 c.on("ready",_=>{
 	console.log('Woof!')
 	c.setStatus("away", "with your feelings")
