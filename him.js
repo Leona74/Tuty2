@@ -84,8 +84,7 @@ c.on("ready",_=>{
 		}
 		
 			if(content === prefix+"help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime	```")
-
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime \n"+prefix+"servers \n\nFun Commands:\n"+prefix+"catname\n"+prefix+"dogname\n"+prefix+"catfact	```")
 		
 if(enableOptional == true) {
 
