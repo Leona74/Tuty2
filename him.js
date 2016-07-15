@@ -1,5 +1,6 @@
 Discord=require("discord.js")
 var enableOptional = false
+var botname = "Blübot" -- BOT NAME
 
 if(enableOptional == true) {
 var jQuery=	require("jquery")
@@ -72,7 +73,7 @@ c.on("ready",_=>{
 		})
 	}}
 
-		if( m.author != m.server.members.get("name","Blübot") ) {
+		if( m.author != m.server.members.get("name",botname) ) {
 		x=m.cleanContent
 	
 	
