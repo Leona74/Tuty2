@@ -31,6 +31,6 @@ c:catname - OPTIONAL Random Cat name
 
 c:dogname - OPTIONAL Random Dog name
 
-c:catfact - Fact about cats
+c:catfact - OPTIONAL Fact about cats
 
 
