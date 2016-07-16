@@ -10,7 +10,7 @@ var dogNames = require('dog-names');
 var catFacts = require('cat-facts');
 var magnet = require('magnet-uri');
 }
-c=new Discord.Client()
+c=new Discord.Client({autoReconnect: true});
 var prefix='c:'
 var prefixlength=2 // length of the prefix
 var mutedUsers = [ ]
