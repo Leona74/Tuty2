@@ -10,7 +10,7 @@ var dogNames = require('dog-names');
 var catFacts = require('cat-facts');
 var magnet = require('magnet-uri');
 }
-c=new Discord.Client({autoReconnect: true});
+c=new Discord.Client();
 var prefix='c:'
 var prefixlength=2 // length of the prefix
 var mutedUsers = [ ]
@@ -22,6 +22,9 @@ var upDays = 0
 process.on('uncaughtException', (err) => {
   console.log(`Caught exception: ${err}`);
 });
+
+
+
 
 c.on("ready",_=>{
 	console.log('Woof!')
@@ -462,3 +465,8 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 })
 })
 c.loginWithToken("token","","")
+
+c.on("disconnected",_=> {
+	c.loginWithToken("token","","") // because autoreconnect seems to be bugged
+} )
+
