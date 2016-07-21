@@ -10,7 +10,7 @@ var dogNames = require('dog-names');
 var catFacts = require('cat-facts');
 var magnet = require('magnet-uri');
 }
-c=new Discord.Client();
+c=new Discord.Client({autoReconnect: true}); // maybe it DOES work?
 var prefix='c:'
 var prefixlength=2 // length of the prefix
 var mutedUsers = [ ]
@@ -26,7 +26,7 @@ process.on('uncaughtException', (err) => {
 
 
 
-c.on("ready",_=>{
+c.once("ready",_=>{ // our troublemaker
 	console.log('Woof!')
 	c.setStatus("away", "with your feelings")
 	console.log('Bark Woof Woof!')
@@ -465,8 +465,4 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 })
 })
 c.loginWithToken("token","","")
-
-c.on("disconnected",_=> {
-	c.loginWithToken("token","","") // because autoreconnect seems to be bugged
-} )
 
