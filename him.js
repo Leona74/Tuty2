@@ -2,6 +2,7 @@ Discord=require("discord.js");
 var enableOptional = false
 
 
+
 if(enableOptional == true) {
 var jQuery = require("jquery");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
@@ -14,7 +15,7 @@ var magnet = require('magnet-uri');
 
 c=new Discord.Client({autoReconnect: true}); // maybe it DOES work?
 var prefix='c:'
-var prefixlength=2 // length of the prefix
+var prefixlength=prefix.length // length of the prefix
 var mutedUsers = [ ]
 var choices = []
 var upSecs = 0
