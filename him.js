@@ -110,14 +110,9 @@ if(req.status == 200)  {
 		pokestatus = result.substring(pokedex+40,pokedex+50)
 		console.log(pokestatus)
 		
-		pokestatus = pokestatus.replace(' ', '') // dirty quick fix in case something fails
-		pokestatus = pokestatus.replace('!', '') // dirty dirty
-		pokestatus = pokestatus.replace('<', '') // really couldnt be bothered here
-		pokestatus = pokestatus.replace('/', '') // make a pull request if you want to clean this
-		pokestatus = pokestatus.replace('f', '')
-		pokestatus = pokestatus.replace('o', '')
-		pokestatus = pokestatus.replace('>', '')
-		pokestatus = pokestatus.replace('"', '') // help me
+pokestatus = pokestatus.substring(0, pokestatus.indexOf('!')); // remove everything after the exclemation mark
+
+pokestatus = pokestatus.substring(pokestatus.indexOf(">") + 1); // remove everything before the >, should resolve errors when HTML code would be shown
 		
 		c.reply(m,"Pokémon GO Server Status: "+pokestatus)
 			
