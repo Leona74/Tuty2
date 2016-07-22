@@ -301,6 +301,19 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			return
 			}
 			
+			if((content.split(' ')[0] == prefix+"userinfo")) {
+	if(!m.mentions[0]) {
+					c.sendMessage(m.channel, "Missing User!");
+					return
+				}						
+	user = m.mentions[0]
+	
+	c.sendMessage(m, "```"+user.username+"\n"+user.status+"\n"+user.avatarURL+"\n Joined: "+user.createdAt+"```")
+	
+	
+	
+}
+			
 			
 			
 			if(content.split(' ')[0] == prefix+"choice") {
