@@ -1,9 +1,9 @@
-Discord=require("discord.js")
+Discord=require("discord.js");
 var enableOptional = false
-var botname = "Blübot" -- BOT NAME
+
 
 if(enableOptional == true) {
-var jQuery = require("jquery")
+var jQuery = require("jquery");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var weather = require('weather-js');
 var catNames = require('cat-names');
@@ -11,27 +11,33 @@ var dogNames = require('dog-names');
 var catFacts = require('cat-facts');
 var magnet = require('magnet-uri');
 }
+
 c=new Discord.Client({autoReconnect: true}); // maybe it DOES work?
 var prefix='c:'
 var prefixlength=2 // length of the prefix
 var mutedUsers = [ ]
+var choices = []
 var upSecs = 0
 var upMins = 0
 var upHours = 0
 var upDays = 0
+
+var userstatus = "away" // Status of the bot, shown as icon next to the profile picture, values: offline, online, away
+var userdisplay = "new prefix: "+prefix+"help" // Status of the bot, shown as "Playing ..."
+
+
 
 process.on('uncaughtException', (err) => {
   console.log(`Caught exception: ${err}`);
 });
 
 
-
-
-c.once("ready",_=>{ // our troublemaker
+c.once("ready",_=>{
 	console.log('Woof!')
-	c.setStatus("away", "with your feelings")
+	c.setStatus(userstatus, userdisplay)
 	console.log('Bark Woof Woof!')
 	userID = c.user.id
+	var botname = c.user.username
 	
 	setInterval( function() {
 		upSecs = upSecs + 1
@@ -40,6 +46,7 @@ c.once("ready",_=>{ // our troublemaker
 			upMins = upMins + 1		
 		} 
 		if (upMins >= 60) {
+			c.setStatus(userstatus, userdisplay)
 			upMins = 0
 			upHours = upHours + 1
 		}
@@ -93,9 +100,11 @@ c.once("ready",_=>{ // our troublemaker
 		}
 		
 			if(content === prefix+"help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime \n"+prefix+"servers \n\nFun Commands:\n"+prefix+"catname\n"+prefix+"dogname\n"+prefix+"catfact\n"+prefix+"choice [CHOICES SEPERATED BY A ',']\n"+prefix+"pokemongo [Pokemon GO Server Status]	```")
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime \n"+prefix+"servers \n\nFun Commands:\n"+prefix+"catname\n"+prefix+"dogname\n"+prefix+"catfact\n"+prefix+"choice [CHOICES SEPERATED BY A ',']\n"+prefix+"pokemongo [Pokemon GO Server Status]\n"+prefix+"userinfo [USER]	```")
+
 		
 if(enableOptional == true) {
+
 
 
 if( (content.split(' ')[0] == prefix+"pokemongo")) {
@@ -107,12 +116,14 @@ if(req.status == 200)  {
       pokedex = result.indexOf("Go Server Status:")
 	  console.log(pokedex)
 		
-		pokestatus = result.substring(pokedex+40,pokedex+50)
+		pokestatus = result.substring(pokedex+37,pokedex+50) 
 		console.log(pokestatus)
 		
-pokestatus = pokestatus.substring(0, pokestatus.indexOf('!')); // remove everything after the exclemation mark
+		
+		
+pokestatus = pokestatus.substring(0, pokestatus.indexOf('!'));
 
-pokestatus = pokestatus.substring(pokestatus.indexOf(">") + 1); // remove everything before the >, should resolve errors when HTML code would be shown
+pokestatus = pokestatus.substring(pokestatus.indexOf(">") + 1);
 		
 		c.reply(m,"Pokémon GO Server Status: "+pokestatus)
 			
@@ -120,6 +131,7 @@ pokestatus = pokestatus.substring(pokestatus.indexOf(">") + 1); // remove everyt
 		delete req;
 }
 }
+
 
 	
 if( (content.split(' ')[0] == prefix+"weather")) {
@@ -129,7 +141,8 @@ if( (content.split(' ')[0] == prefix+"weather")) {
 	return
 	}
 weather.find({search: loc, degreeType: 'C'}, function(err, result) {
-  if(err) c.sendMessage(m,err);
+  if(err) { c.sendMessage(m,err)};
+ 
  
  
  c.sendMessage(m, "Weather for: "+result[0].location.name+"\nTemperature: "+result[0].current.temperature+"°C\nFeels like: "+result[0].current.feelslike+"°C\n"+result[0].current.skytext+"\n"+result[0].current.humidity+"% Humidity \nWind Speed: "+result[0].current.winddisplay)
@@ -143,7 +156,7 @@ loc = content.substring(prefixlength+9)
 	return
 	}
 weather.find({search: loc, degreeType: 'C'}, function(err, result) {
-  if(err) c.sendMessage(m,err);
+  if(err) { c.sendMessage(m,err)};
  c.sendMessage(m, "Weather forecast for: "+result[0].location.name+"\n`"+result[0].forecast[1].day+"`\nLow: "+result[0].forecast[1].low+"°C\nHigh: "+result[0].forecast[1].high+"°C\n"+result[0].forecast[1].skytextday+"\n\n`"+result[0].forecast[2].day+"`\nLow: "+result[0].forecast[2].low+"°C\nHigh: "+result[0].forecast[2].high+"°C\n"+result[0].forecast[2].skytextday+"\n\n`"+result[0].forecast[3].day+"`\nLow: "+result[0].forecast[3].low+"°C\nHigh: "+result[0].forecast[3].high+"°C\n"+result[0].forecast[3].skytextday+"\n\n`"+result[0].forecast[4].day+"`\nLow: "+result[0].forecast[4].low+"°C\nHigh: "+result[0].forecast[4].high+"°C\n"+result[0].forecast[4].skytextday )
 })
 }
@@ -167,7 +180,10 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 	if( (content.split(' ')[0].match("magnet:"))) {
 		uri = content.split(' ')[0]
 		var parsed = magnet.decode(uri)
-		c.sendMessage(m, "`Magnet Name: "+parsed.name+"\nHash: "+parsed.infoHash+"`")
+		var announce = parsed.announce
+		announce = announce.toString()
+		announce = announce.replace(",","\n")
+		c.sendMessage(m, "```Magnet Name: "+parsed.name+"\nHash: "+parsed.infoHash+"\nTrackers:\n"+announce+"```")
 		
 		
 	}
@@ -177,6 +193,24 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 
 
 }
+
+		
+if((content.split(' ')[0] == prefix+"userinfo")) {
+	if(!m.mentions[0]) {
+					c.sendMessage(m.channel, "Missing User!");
+					return
+				}						
+	user = m.mentions[0]
+	
+	c.sendMessage(m, "```"+user.username+"\n"+user.status+"\n"+user.avatarURL+"\nJoined: "+user.createdAt+"```")
+	
+	
+	
+}
+		
+		
+		
+		
 		
 				mlow = content
 			if( (mlow.split(' ')[0] == "call") && (mlow.split(' ')[1] == "me")) {
@@ -198,7 +232,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 				c.sendMessage(m,"Set Nickname back to "+newname)	
 				return}
 
-
+			
 				
 				
 				
@@ -221,12 +255,6 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 		
 		
 		
-		
-		if(m.server == c.servers.get("name", "Phoenix Gaming")) {
-			if(content.match("forum")) {
-				c.reply(m,`Hey there, our Forum URL is http://pxg-mta.de`)
-			}
-		}
 				console.log(m.author.name + ": " +content)
 			if(content.match("who's a good dog")) {
 			c.reply(m,`I AM!!!!!`) 
@@ -284,6 +312,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			if(content === prefix+"invite") {
 				c.reply(m,"Invite me to another server using this link: https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
 			return}
+			
 			if(fetchm.split(' ')[0] == "fetch") {
 				if(fetchm.split(' ')[1] == "bacon") {
 				c.reply(m,"*eats bacon*")
@@ -301,23 +330,10 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			return
 			}
 			
-			if((content.split(' ')[0] == prefix+"userinfo")) {
-	if(!m.mentions[0]) {
-					c.sendMessage(m.channel, "Missing User!");
-					return
-				}						
-	user = m.mentions[0]
-	
-	c.sendMessage(m, "```"+user.username+"\n"+user.status+"\n"+user.avatarURL+"\n Joined: "+user.createdAt+"```")
-	
-	
-	
-}
-			
-			
-			
 			if(content.split(' ')[0] == prefix+"choice") {
-			choices = content.split(',')	
+			tempcnt = content.replace(prefix+"choice", "")
+			choices = tempcnt.split(',')	
+			
 			
 			var choice = choices[Math.floor(Math.random()*choices.length)];
 				
@@ -326,18 +342,14 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			c.sendMessage(m,"I choose `"+choice+"`!")
 			}
 			choices = []
+			tempcnt = undefined
 			return
 			}
 			
-			
-			
-			if(m.content.match("bacon?")) {
+			if(content == "bacon?") {
 			c.reply(m,"bacon!")
 			return}
 			
-			if(m.content.match("spam?")) {
-			c.reply(m,"spam!")
-			return}
 			
 			
 			if(content.match("who is a cute")) {
@@ -347,9 +359,6 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 				c.reply(m,'*lies down*')
 				c.sendMessage(m,'http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
 			return}
-			if(content === prefix+"servers") {
-				c.sendMessage(m,"I'm currently connected to "+c.servers.length+" Servers!")
-				}
 			
 			
 //			if(content.split(' ')[0] == prefix+"setprefix") {
@@ -423,6 +432,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 		c.getChannelLogs(chnel,cleanuprepeat, function resmsgerr(error,messages)
 		{
 		delLogs(messages)
+		c.reply(m,"cleaned the chat up! ("+cleanuprepeat+")")
 		if (err) {
 		console.log(err)
 		}
@@ -486,7 +496,7 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 			}			
 	
 			if(content.match("<@"+ userID +">")) {
-				c.reply(m,"Sup! use `"+ prefix+"help`")
+				c.reply(m,"Sup! Use `"+ prefix+"help`")
 			return
 			} 
 
@@ -503,4 +513,3 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 })
 })
 c.loginWithToken("token","","")
-
