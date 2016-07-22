@@ -33,4 +33,6 @@ c:dogname - OPTIONAL Random Dog name
 
 c:catfact - OPTIONAL Fact about cats
 
+c:pokemongo - OPTIONAL Pokèmon GO Server status ( Crowdsourced )
 
+c:userinfo - Info about mentioned user
