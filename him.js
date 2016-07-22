@@ -3,7 +3,8 @@ var enableOptional = false
 var botname = "Blübot" -- BOT NAME
 
 if(enableOptional == true) {
-var jQuery=	require("jquery")
+var jQuery = require("jquery")
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var weather = require('weather-js');
 var catNames = require('cat-names');
 var dogNames = require('dog-names');
@@ -92,9 +93,38 @@ c.once("ready",_=>{ // our troublemaker
 		}
 		
 			if(content === prefix+"help")
-		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime \n"+prefix+"servers \n\nFun Commands:\n"+prefix+"catname\n"+prefix+"dogname\n"+prefix+"catfact\n"+prefix+"choice [CHOICES SEPERATED BY A ',']	```")
+		c.reply(m,"```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n"+prefix+"help \n"+prefix+"invite \n"+prefix+"kick [USER] \n"+prefix+"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n"+prefix+"mute [USER] \n"+prefix+"unmute [USER] \n"+prefix+"cleanup [NUMBER 1-50] \n"+prefix+"uptime \n"+prefix+"servers \n\nFun Commands:\n"+prefix+"catname\n"+prefix+"dogname\n"+prefix+"catfact\n"+prefix+"choice [CHOICES SEPERATED BY A ',']\n"+prefix+"pokemongo [Pokemon GO Server Status]	```")
 		
 if(enableOptional == true) {
+
+
+if( (content.split(' ')[0] == prefix+"pokemongo")) {
+var req = new XMLHttpRequest();  
+req.open('GET', 'http://cmmcd.com/PokemonGo/', false);   
+req.send(null);  
+if(req.status == 200)  {
+	result = req.responseText
+      pokedex = result.indexOf("Go Server Status:")
+	  console.log(pokedex)
+		
+		pokestatus = result.substring(pokedex+40,pokedex+50)
+		console.log(pokestatus)
+		
+		pokestatus = pokestatus.replace(' ', '') // dirty quick fix in case something fails
+		pokestatus = pokestatus.replace('!', '') // dirty dirty
+		pokestatus = pokestatus.replace('<', '') // really couldnt be bothered here
+		pokestatus = pokestatus.replace('/', '') // make a pull request if you want to clean this
+		pokestatus = pokestatus.replace('f', '')
+		pokestatus = pokestatus.replace('o', '')
+		pokestatus = pokestatus.replace('>', '')
+		pokestatus = pokestatus.replace('"', '') // help me
+		
+		c.reply(m,"Pokémon GO Server Status: "+pokestatus)
+			
+			
+		delete req;
+}
+}
 
 	
 if( (content.split(' ')[0] == prefix+"weather")) {
