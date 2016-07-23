@@ -1,0 +1,7 @@
++{
+    "prefix": " c:",
+    "token": "token"
+	"onlinestatus": "away"
+	"onlinemessage": "new prefix: .help" 
+	"enableOptional": false
+}

@@ -1,7 +1,6 @@
 Discord=require("discord.js");
-var enableOptional = false
-
-
+var config = require("./config.json")
+var enableOptional = config.enableOptional
 
 if(enableOptional == true) {
 var jQuery = require("jquery");
@@ -14,8 +13,8 @@ var magnet = require('magnet-uri');
 }
 
 c=new Discord.Client({autoReconnect: true}); // maybe it DOES work?
-var prefix='c:'
-var prefixlength=prefix.length // length of the prefix
+var prefix= config.prefix
+var prefixlength= prefix.length // length of the prefix
 var mutedUsers = [ ]
 var choices = []
 var upSecs = 0
@@ -23,8 +22,8 @@ var upMins = 0
 var upHours = 0
 var upDays = 0
 
-var userstatus = "away" // Status of the bot, shown as icon next to the profile picture, values: offline, online, away
-var userdisplay = "new prefix: "+prefix+"help" // Status of the bot, shown as "Playing ..."
+var userstatus = config.onlinestatus
+var userdisplay = config.onlinemessage
 
 
 
@@ -513,4 +512,4 @@ if((content.split(' ')[0] == prefix+"userinfo")) {
 		c.sendMessage(x.channels.get('name','welcome'),`Welcome ${y}! Read #rules to make sure you dont break any, please enjoy your stay here!`)
 })
 })
-c.loginWithToken("token","","")
+c.loginWithToken(config.token,"","")
