@@ -2,6 +2,6 @@
 	"prefix": " c:",
 	"token": "token",
 	"onlinestatus": "away",
-	"onlinemessage": "new prefix: .help" ,
+	"onlinemessage": "new prefix: c:help" ,
 	"enableOptional": false
 }
