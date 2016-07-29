@@ -36,3 +36,5 @@ c:catfact - OPTIONAL Fact about cats
 c:pokemongo - OPTIONAL Pokèmon GO Server status ( Crowdsourced )
 
 c:userinfo - Info about mentioned user
+
+c:gif - look for random gif, provide multiple words to limit search
