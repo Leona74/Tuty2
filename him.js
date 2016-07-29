@@ -10,6 +10,7 @@ var catNames = require('cat-names');
 var dogNames = require('dog-names');
 var catFacts = require('cat-facts');
 var magnet = require('magnet-uri');
+var giphy = require('giphy-api')();
 }
 
 c=new Discord.Client({autoReconnect: true}); // maybe it DOES work?
@@ -187,6 +188,24 @@ weather.find({search: loc, degreeType: 'C'}, function(err, result) {
 		
 		
 	}
+	
+	
+	
+	if( (content.split(' ')[0] == prefix+"gif")) {
+		sb = content.substring(4)
+	giphy.random({
+    tag: sb,
+    rating: 'g',
+    fmt: 'json'
+}, function(err, res) {
+if (getValue("image_url",res)) {
+
+	c.sendMessage(m, getValue("image_url",res))
+	}
+ 
+});
+		
+		}
 
 	
 	
