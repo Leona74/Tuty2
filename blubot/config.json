@@ -1,0 +1,10 @@
+{
+	"prefix": ".",
+	"token": "TOKEN",
+	"onlinestatus": "away",
+	"onlinemessage": ":3",
+	"enableOptional": true,
+	"logfile": "blubot/blulog.txt",
+	"logfile_error": "blubot/blulog_error.txt",
+	"admins": ["178889658128793600"]
+}
