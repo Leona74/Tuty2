@@ -1,6 +1,4 @@
 Discord = require("discord.js");
-
-// "reload" IS REQUIRED
 var reload = require('require-reload')(require),
 	config = reload('./blubot/config.json');
 enableOptional = config.enableOptional
@@ -11,6 +9,18 @@ ver = config.version
 admins = config.admins
 prefix = config.prefix;
 prefixlength = prefix.length;
+blacklist = config.blacklist
+
+var userstatus = config.onlinestatus
+var userdisplay = config.onlinemessage
+
+
+
+states = ["Singleplayer Hide and Seek", "with Blü", "Unhandled Exception", "WASTED!", "Dumb", "Who's a good bot?", "Debian x64", "*Dial up noises*", "4A-GE Repairs", "Saving for my E46", "Ricer Simulator 2004", "DDoS Simulator", "bi noob delet mw go play tetris", "Forza Horizon 3", "It's hot in here", "spam?", "owo whats this", "Multi Theft Auto: San Andreas", "everything", "with Lego", "with Putin's Tank", "Assetto Corsa", "Snail Snail..."]
+
+
+
+kickbanmsg = ["Was about time.","Well, let's hope he doesnt come back..","aaand there goes him!","bye bye!","Get wrecked!","he was found to be unoptimised.","he did something wrong."]
 
 
 if (enableOptional == true) {
@@ -25,6 +35,7 @@ if (enableOptional == true) {
 	var fs = require('fs');
 	var gis = require('g-image-search');
 	var download = require('download');
+	var glitch = require('glitch');
 }
 
 function delLogs(item, index) {
@@ -51,11 +62,6 @@ function getValue(key, array) {
 	}
 }
 
-var userstatus = config.onlinestatus
-var userdisplay = config.onlinemessage
-
-blacklist = ["199646936196841473", "141725069037666305", "177286767903244288"]
-
 
 
 process.on('uncaughtException', (err) => {
@@ -70,29 +76,51 @@ process.on('uncaughtException', (err) => {
 
 
 function muteUser(user) {
-	mutedUsers.push(user)
+	mutedUsers.push(user.id)
 }
 
+function ignoreUser(user) {
+	blacklist.push(user.id)
+	console.log(blacklist)
+}
 
 function unmuteUser(user) {
 	for (var i = mutedUsers.length; i--;) {
-		if (mutedUsers[i] === user) mutedUsers.splice(i, 1);
+		if (mutedUsers[i] === user.id) mutedUsers.splice(i, 1);
 	}
 }
 
+
+function unignoreUser(user) {
+	for (var i = blacklist.length; i--;) {
+		if (blacklist[i] === user.id) blacklist.splice(i, 1);
+	}
+}
+
+function removeTimeout(timeoutUser,timeoutChannel,theRole) {
+	timeoutUser.removeRole(theRole).then(timeoutChannel.sendMessage(timeoutUser.user.username+"'s timeout has been lifted!"))
+	console.log(timeoutUser.user.username+"'s timeout has been lifted!")
+}
+
+
 c.once("ready", _ => {
-	console.log('Woof!')
-	c.user.setStatus(userstatus, userdisplay)
-	console.log('Bark Woof Woof!')
+	console.log('Yip!')
+	c.user.setStatus(userstatus)
+	c.user.setGame(userdisplay)
+	console.log('Yip Yap!')
 	userID = c.user.id
 	console.log("My UserID: " + userID)
 	botname = c.user.username
+
+	
+
 
 	setInterval(function() {
 		upSecs = upSecs + 1
 		if (upSecs >= 60) {
 			var userdisplay = states[Math.floor(Math.random() * states.length)];
-			c.user.setStatus(userstatus, userdisplay)
+			c.user.setStatus(userstatus)
+			c.user.setGame(userdisplay)
 			upSecs = 0
 			upMins = upMins + 1
 		}
@@ -130,8 +158,10 @@ c.on('message', m => {
 	mutedUsers.forEach(checkMuted)
 
 
+	
+
 	function checkMuted(item, index) {
-		if (m.author.id == item.id) {
+		if (m.author.id == item) {
 			m.delete()
 		}
 	}
@@ -167,10 +197,47 @@ c.on('message', m => {
 
 
 	if (content === prefix + "help") {
-		m.reply("\n```Hello there, Here is what i can do: \nI will respond to meow's and woofs, react to questions such as *do you want a treat*, *who is a good doggy* etc \nI also react to commands like sit!, roll!, stand up! lay down! fetch!\nMy Commands are:\n" + prefix + "help \n" + prefix + "invite \n" + prefix + "kick [USER] \n" + prefix + "ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n" + prefix + "mute [USER] \n" + prefix + "unmute [USER] \n" + prefix + "cleanup [NUMBER 1-50] \n" + prefix + "uptime \n" + prefix + "servers \n" + prefix + "gif [KEYWORD]\n" + prefix + "userinfo [USER] \n" + prefix + "img [KEYWORD]\n \n\nFun Commands:\n" + prefix + "catname\n" + prefix + "dogname\n" + prefix + "catfact\n" + prefix + "choice [CHOICES SEPERATED BY A ',']\n" + prefix + "pokemongo [Pokemon GO Server Status]	```")
+		m.reply("\n```Hello there, \nMy Commands are:\n" + prefix + 
+		"help \n" + prefix + 
+		"invite \n" + prefix + 
+		"kick [USER] \n" + prefix + 
+		"ban [USER] [DAYS AGO FOR MESSAGES TO BE DELETED] \n" + prefix + 
+		"mute [USER] \n" + prefix + 
+		"unmute [USER] \n" + prefix + 
+		"timeout [USER] [TIME] \n" + prefix + 
+		"cleanup [NUMBER 1-50] \n" + prefix + 
+		"uptime \n" + prefix + 
+		"servers \n" + prefix + 
+		"gif [KEYWORD]\n" + prefix + 
+		"userinfo [USER] \n" + prefix + 
+		"serverinfo \n" + prefix + 
+		"img [KEYWORD]\n \n\nFun Commands:\n" + prefix + 
+		"catname\n" + prefix + 
+		"dogname\n" + prefix + 
+		"catfact\n" + prefix + 
+		"choice [CHOICES SEPERATED BY A ',']\n" + prefix + 
+		"pokemongo [Pokemon GO Server Status]	```")
+		admins.forEach(function(item, index) {
+
+			if (m.author.id === item) {
+				m.reply("\n```Commands that **you** can use:\n" + prefix + "reloadcfg \n" + prefix + "shutdown\n" + prefix + "newavatar \n and other secret functions...```")
+			}
+
+		})
 		return;
 	}
 
+
+	if (content === prefix + "newavatar") {
+		admins.forEach(function(item, index) {
+
+			if (m.author.id === item) {
+				c.user.setAvatar('blubot/avi.jpg')
+					.then(user => console.log(`New avatar set!`))
+					.catch(console.log);
+			}
+		})
+	}
 
 	if (content === prefix + "reloadcfg") {
 		admins.forEach(function(item, index) {
@@ -179,6 +246,7 @@ c.on('message', m => {
 				try {
 					config = reload('./blubot/config.json');
 				} catch (e) {
+					//if this threw an error, the api variable is still set to the old, working version
 					m.reply("Following Error occured:" + e)
 					console.log(e)
 					return
@@ -191,6 +259,11 @@ c.on('message', m => {
 				ver = config.version
 				prefix = config.prefix;
 				prefixlength = prefix.length;
+				admins = config.admins
+				blacklist = config.blacklist
+			
+
+
 				m.reply("Config Reloaded")
 			}
 
@@ -206,7 +279,8 @@ c.on('message', m => {
 
 	if (enableOptional == true) {
 
-	
+
+
 		if ((content.split(' ')[0] == prefix + "pokemongo")) {
 			var req = new XMLHttpRequest();
 			req.open('GET', 'http://cmmcd.com/PokemonGo/', false);
@@ -219,6 +293,8 @@ c.on('message', m => {
 
 
 				pokestatus = result.substring(pokedex + 37, pokedex + 50)
+
+				console.log(pokestatus)
 
 
 
@@ -318,7 +394,12 @@ c.on('message', m => {
 
 
 		if ((content.split(' ')[0] == prefix + "img")) {
-			sb = content.substring(4)
+		sb = content.substring(5)
+		if (sb.match("porn") || sb.match("yiff") || sb.match("sex") || sb.match("nude") || sb.match("scat") || sb.match("shit") ) {
+			m.reply("no.")
+			return
+			
+		}  
 			msg = m.channel.sendMessage("```Searching...```").then((msg) =>
 				gis(sb).then(function logResults(results) {
 					results = results.slice(0, 20)
@@ -334,43 +415,80 @@ c.on('message', m => {
 				}));
 
 		}
-
 	}
 
 
 	if ((content.split(' ')[0] == prefix + "userinfo")) {
 		if (!m.mentions.users.first()) {
-			m.channel.sendMessage("Missing User!");
-			return
-		}
+		
+			user = m.author
+			guildMember = m.member
+			userRoles = guildMember.roles
+			} else {
+				
 		user = m.mentions.users.first()
+		guildMember = m.guild.member(user)
+		userRoles = guildMember.roles
+				
+			}
 
-		m.channel.sendMessage("```" + user.username + "\n" + user.status + "\n" + user.avatarURL + "\nJoined: " + user.createdAt + "```")
+		
+		roleCollection = []
+		
+		userRoles.forEach(function (role,roleID) {
+			roleCollection.push(role.name)
+		})
+		
+			if (user.presence.game) {
+			gamestring = "\nGame: " + user.presence.game.name
+			} else {
+			gamestring = ""
+			}
+
+		m.channel.sendMessage("```Name: " + user.username + "#"+ user.discriminator+
+		"\nStatus: " + user.presence.status + 
+		gamestring +
+		"\nID: "+ user.id +
+		"\nJoined: " + guildMember.joinedAt +
+		"\nCreated: " + user.createdAt +
+		"\nHighest Role: "+guildMember.highestRole.name+
+		"\nKickable: "+guildMember.kickable+
+		"\nUser Roles: "+roleCollection.join(', ')+
+		"\n```"+user.avatarURL);
+
+
+
+	}
+	
+	
+	if ((content.split(' ')[0] == prefix + "serverinfo")) {
+		
+		theGuild = m.guild
+		guildRoles = m.guild.roles
+		
+		roleCollection = []
+		
+		guildRoles.forEach(function (role,roleID) {
+			roleCollection.push(role.name)
+		})
+		
+		m.channel.sendMessage("```Name: " + theGuild.name + 
+		"\nOwner: " + theGuild.owner.user.username + "#"+theGuild.owner.user.discriminator+
+		"\nID: "+ theGuild.id +
+		"\nRegion: " + theGuild.region +
+		"\nRegion Server Online: "+theGuild.available+
+		"\nMembers: "+theGuild.memberCount+
+		"\nDefault Channel: "+theGuild.defaultChannel+
+		"\nCreated: "+theGuild.createdAt+
+		"\nVerification Level: "+theGuild.verificationLevel+
+		"\n\n\nRoles:"+roleCollection.join(', ')+
+		"\nGuild Icon: ```"+theGuild.iconURL);
 
 
 
 	}
 
 
-
-	if ((content.split(' ')[0] == prefix + "setstatus")) {
-		if (content.split(' ')[1] == "online" || content.split(' ')[1] == "away") {
-			var userstatus = m.content.split(' ')[1] // Status of the bot, shown as icon next to the profile picture, values: offline, online, away
-
-			if (content.split(' ')[1] == "online") {
-				userdisplay = m.content.substring(prefixlength + 10 + 7)
-			}
-			if (content.split(' ')[1] == "away") {
-				userdisplay = m.content.substring(prefixlength + 10 + 5)
-			}
-			m.reply("Successfully changed, please wait a minute...")
-			c.user.setStatus(userstatus, userdisplay)
-
-
-		}
-
-
-	}
 
 
 
@@ -385,23 +503,13 @@ c.on('message', m => {
 			console.log(oldname)
 			console.log(newname)
 			if ((oldname === newname) || (!newname) || (newname == "nothing") || (newname == "maybe")) {
-				c.setNickname(server, oldname, m.author, function(error) {
-					if (error) {
-						//console.log(error)
-						m.channel.sendMessage(error)
-					}
-				})
+				m.member.setNickname(oldname)
 				console.log(m.author.username + " reset his name to " + oldname)
 				m.channel.sendMessage("Set Nickname back to " + oldname)
 				return
 			}
 
-			c.setNickname(server, newname + " (" + oldname + ")", m.author, function(error) {
-				if (error) {
-					console.log(error)
-					m.channel.sendMessage(error)
-				}
-			})
+			m.member.setNickname(newname + " (" + oldname + ")")
 			console.log(m.author.username + " set his name to " + newname)
 			m.channel.sendMessage("Set Nickname to " + newname)
 		} else {
@@ -412,86 +520,6 @@ c.on('message', m => {
 
 
 
-
-	if (content.match("who's a good dog")) {
-		m.reply(`I AM!!!!!`)
-		return
-	}
-	if (content.match("who is a good dog")) {
-		m.reply(`I AM!!!!!`)
-		return
-	}
-	if (content.match("good night")) {
-		m.channel.sendMessage(`Sweet Dreams!`)
-		return
-	}
-	if (content.match("you want a treat")) {
-		m.reply(`YES YES YES YES YES`)
-		return
-	}
-	if (content.match("wants a treat")) {
-		m.reply("ME ME ME ME")
-		return
-	}
-	if (content.match("yes you are")) {
-		m.reply(`^w^`)
-		return
-	}
-	if (content === "sit!") {
-		m.reply('*sits down*')
-		m.channel.sendMessage('http://thumbs.dreamstime.com/z/shiba-inu-sits-white-background-puppy-49353113.jpg')
-		return
-	}
-	if (content === "roll!") {
-		m.reply('*rolls over*')
-		m.channel.sendMessage('https://img.buzzfeed.com/buzzfeed-static/static/2015-01/7/20/enhanced/webdr10/enhanced-30407-1420679140-11.jpg')
-		return
-	}
-	if (content === "roll over!") {
-		m.reply('*rolls over*')
-		m.channel.sendMessage('https://img.buzzfeed.com/buzzfeed-static/static/2015-01/7/20/enhanced/webdr10/enhanced-30407-1420679140-11.jpg')
-		return
-	}
-	if (content === "stand up!") {
-		m.reply('*stands up*')
-		m.channel.sendMessage('http://www.dogs-wallpapers.com/user-content/uploads/wall/o/86/shiba_inu_dog_on_leash_wallpaper.jpg')
-		return
-	}
-	if (content.match === "i love dogs") {
-		m.reply(`i love you too!`)
-		return
-	}
-	if (content.match("meow")) {
-		m.reply(`Woof woof Woof woof woof woof woof!`)
-		return
-	}
-	if (content.match("woof")) {
-		m.reply(`woof!`)
-		return
-	}
-	if (content.match("miau")) {
-		m.reply(`Woof woof Woof woof woof woof woof!`)
-		return
-	}
-	if (content.match("bark")) {
-		m.reply(`bark bark bark bark!!`)
-		return
-	}
-
-	if (fetchm.split(' ')[0] == "fetch") {
-		if (fetchm.split(' ')[1] == "bacon") {
-			m.reply("*eats bacon*")
-			return
-		}
-		if (!fetchm.split(' ')[1]) {
-			m.reply("*Looks at you confused*")
-			return
-		} else {
-
-			m.reply("*fetches " + m.content.substring(6) + "*")
-		}
-		return
-	}
 
 	if (content.split(' ')[0] == prefix + "choice") {
 		tempcnt = content.replace(prefix + "choice", "")
@@ -509,21 +537,72 @@ c.on('message', m => {
 		return
 	}
 
-	if (content == "bacon?") {
-		m.reply("bacon!")
-		return
-	}
+	if (content.split(' ')[0] == prefix + "getservers") {
+		
+		
+		run = 0
+		admins.forEach(function(item, index) {
+			if (run == 1) return
+			
+			if (m.author.id === item) {
 
+			guilds = c.guilds.array()
+			
+			response = "Guilds that i am in:\n`"
+			
+			guilds.forEach(function(item, index) {
+			console.log(item.id)
+			console.log(item.name)
+			
+			response = response + "\n "+ item.id + "     " +item.name
+			
+				
+				
+			})
+			response = response + "`\n"
+			console.log(response)
+			m.reply(response)
+			
+			
+	
+			}
 
-	if (content.match("who is a cute")) {
-		m.reply(`I AM!!!!!`)
-		return
+		})
+
 	}
-	if (content === "lay down!") {
-		m.reply('*lies down*')
-		m.channel.sendMessage('http://images.shibashake.com/wp-content/blogs.dir/7/files/2010/03/IMG_2728.jpg')
-		return
+		
+		
+	if (content.split(' ')[0] == prefix + "leaveserver") {
+		
+		
+		run = 0
+		admins.forEach(function(item, index) {
+			if (run == 1) return
+			
+			if (m.author.id === item) {
+
+			theGuild = content.split(' ')[1]
+			guilds = c.guilds.array()
+			guilds.forEach(function(item, index) {
+			
+			if (theGuild == item.id) {
+				
+				console.log("Just left "+item.name+" ("+item.id+")")
+				m.reply("Just left "+item.name+" ("+item.id+")")
+				item.leave()
+				return
+			}
+			
+			
+			
+			})
+			}
+
+		})
+
 	}
+		
+	
 
 
 	if (content.split(' ')[0] == prefix + "mute") {
@@ -549,6 +628,28 @@ c.on('message', m => {
 		return
 	}
 
+	
+	if (content.split(' ')[0] == prefix + "ignore") {
+		if (m.member.hasPermission("MANAGE_MESSAGES")) {
+			if (!m.mentions.users.first()) {
+				m.channel.sendMessage("Missing User!");
+				return
+			}
+
+			ignoredUser = m.mentions.users.first()
+			if (ignoredUser == "<@" + userID + ">") {
+				m.channel.sendMessage("You make me ignore myself!")
+				return
+			}
+			m.channel.sendMessage("Ignoring User!")
+			ignoreUser(ignoredUser)
+
+		} else {
+			m.reply("You dont have the right Permissions, sorry! ( expected MANAGE_MESSAGES )");
+		}
+		return
+	}
+	
 
 	if (content.split(' ')[0] == prefix + "unmute") {
 		if (m.member.hasPermission("MANAGE_MESSAGES")) {
@@ -559,7 +660,25 @@ c.on('message', m => {
 			unmutedUser = m.mentions.users.first()
 			m.channel.sendMessage("User Unsilenced!")
 			console.log(m.author.username + " unmuted " + unmutedUser)
+			console.log(unmutedUser)
 			unmuteUser(unmutedUser)
+
+		} else {
+			m.reply("You dont have the right Permissions, sorry! ( expected MANAGE_MESSAGES )");
+
+		}
+		return
+	}
+	
+	if (content.split(' ')[0] == prefix + "unignore") {
+		if (m.member.hasPermission("MANAGE_MESSAGES")) {
+			if (!m.mentions.users.first()) {
+				m.channel.sendMessage("Missing User!");
+				return
+			}
+			unignoredUser = m.mentions.users.first()
+			m.channel.sendMessage("User unignored!")
+			unignoreUser(unignoredUser)
 
 		} else {
 			m.reply("You dont have the right Permissions, sorry! ( expected MANAGE_MESSAGES )");
@@ -591,41 +710,244 @@ c.on('message', m => {
 
 
 	if (content.split(' ')[0] == prefix + "kick") {
-		if (m.member.hasPermission("KICK_MEMBERS")) {
+		var theirRoles = m.member.roles
+		kicked = 0
+		
+		theirRoles.forEach(checkUserGroup)
+		
+	function checkUserGroup(item, array) {
+	if (item.name == "owner" || item.name == "mods" || item.name == "owner rank" || item.name == "admin" || item.name == "moderator" && kicked == 0) {
+	if (kicked == 1) return;
+	
 
 			if (!m.mentions.users.first()) {
 				m.channel.sendMessage("Missing User!");
+				kicked = 1
+				return
+			}
+			kickmsg = kickbanmsg[Math.floor(Math.random() * kickbanmsg.length)]
+			
+			
+			kickname = m.mentions.users.first().username
+			unmuteUser(m.mentions.users.first())
+			m.guild.member(m.mentions.users.first()).kick().then(m.channel.sendMessage(kickmsg)).catch(console.error);
+			kicked = 1
+		return
+		
+		
+	}
+if (kicked == 1) return;
+	if (m.member.hasPermission("KICK_MEMBERS")) {
+			if (!m.mentions.users.first()) {
+				m.channel.sendMessage("Missing User!");
+				kicked = 1
 				return
 			}
 			unmuteUser(m.mentions.users.first())
-			m.guild.member(m.mentions.users.first()).kick().then(m.channel.sendMessage("Bye Bye!")).catch(console.error);
-		}
+			
+			kickmsg = kickbanmsg[Math.floor(Math.random() * kickbanmsg.length)]
+			
+			
+			kickname = m.mentions.users.first().username
+			m.guild.member(m.mentions.users.first()).kick().then(m.channel.sendMessage(kickmsg)).catch(console.error);
+			kicked = 1
+			return
+
+
+	}
+
+	}
 	}
 
 
 	if (content.split(' ')[0] == prefix + "ban") {
+		var theirRoles = m.member.roles
+		banned = 0
+		if (banned == 1) return
+		theirRoles.forEach(checkUserGroup)
+		
+	function checkUserGroup(item, array) {
+	if (banned == 1) return
+	if (item.name == "owner" || item.name == "mods" || item.name == "owner rank" && banned == 0) {
+	
+	if (banned == 1) return
+			banTime = 1
+			
+			if (!m.mentions.users.first()) {
+				m.channel.sendMessage("Missing User!");
+				banned = 1
+				return
+			}
+
+			
+			
+			kickmsg = kickbanmsg[Math.floor(Math.random() * kickbanmsg.length)]
+			
+			
+			kickname = m.mentions.users.first().username
+			unmuteUser(m.mentions.users.first())
+			m.guild.member(m.mentions.users.first()).ban(0).then(m.channel.sendMessage(kickmsg)).catch(console.error);
+			banned = 1
+			banTime = 1
+			return
+	}
+	
+	
+	if (banned == 1) return
+	
 		if (m.member.hasPermission("BAN_MEMBERS")) {
 			banTime = 1
 
 			if (!m.mentions.users.first()) {
 				m.channel.sendMessage("Missing User!");
+				banned = 1
 				return
 			}
-
+			
+			
+			
+			kickmsg = kickbanmsg[Math.floor(Math.random() * kickbanmsg.length)]
+			
+			
+			kickname = m.mentions.users.first().username
 			unmuteUser(m.mentions.users.first())
-			m.guild.member(m.mentions.users.first()).ban(0).then(m.channel.sendMessage("Banned!")).catch(console.error);
+			m.guild.member(m.mentions.users.first()).ban(0).then(m.channel.sendMessage(kickmsg)).catch(console.error);
+			banned = 1
 		}
 	}
+	}
 
+	
 	if (content.match("<@" + userID + ">")) {
 		m.reply("Sup! Use `" + prefix + "help`")
 		return
 	}
 
+	if (content === prefix + "shutdown") {
+		admins.forEach(function(item, index) {
 
+			if (m.author.id === item) {
+			m.reply("Ok")
+			c.destroy()
+			}
 
+		})
 
+	}
 
-})
+	
+	if (content.split(' ')[0] == prefix + "timeout") {
+		var theirRoles = m.member.roles
+		timedout = 0
+		theirRoles.forEach(checkUserGroup)
+		
+	function checkUserGroup(item, array) {
+	if (timedout == 1) return
+	if (item.name == "owner" || item.name == "mods" || item.name == "owner rank" || item.name == "admin" || item.name == "moderator"  && timedout == 0) {
+	
+	if (timedout == 1) return
+			
+			if (!m.mentions.users.first()) {
+				m.channel.sendMessage("Missing User!");
+				timedout = 1
+				return
+			}
+			if(content.split(' ')[2]) {
+				timeout = content.split(' ')[2]
+			}
+			else
+			{
+			timeout = 5
+			}
+			
+
+			
+			
+			var roles = m.guild.roles
+			var theRole = roles.find('name', "timeout")
+			
+			if(!theRole) {
+				m.reply("`timeout` role missing, please create one and set its permissions first!")
+				return
+				
+				
+			}
+
+			timeout = timeout * 60 * 1000
+			if(!timeout) {timeout = 5*60*1000}
+			timeoutUser = m.guild.member(m.mentions.users.first())
+			timeoutChannel = m.channel
+			timeoutUser.addRole(theRole).then(m.channel.sendMessage(timeoutUser.user.username+" has been timed out for "+timeout/60/1000+" minutes!")).catch(console.error);
+			//m.guild.member(m.mentions.users.first()).kick().then(m.channel.sendMessage(kickmsg)).catch(console.error);
+			timedout = 1
+			
+			setTimeout(removeTimeout, timeout,timeoutUser,timeoutChannel,theRole)
+			console.log(timeoutUser.user.username+" has been timed out")
+			return
+	}
+
+	}
+	}
+	
+	if (content.split(' ')[0] == prefix + "removerole") {
+		run = 0
+		admins.forEach(function(item, index) {
+			if (run == 1) return
+			
+			if (m.author.id === item) {
+			if (run == 1) return
+
+			run = 1
+			var sb = m.content.substring(12)
+			var roles = m.guild.roles
+			var theRole = roles.find('name', sb)
+
+			
+			
+			m.member.removeRole(theRole)
+			console.log("removed "+m.author.username+"'s "+sb+" role.")
+			
+			
+			m.delete()		
+	
+			}
+
+		})
+
+	}
+	
+	if (content.split(' ')[0] == prefix + "getroles") {
+		run = 0
+		admins.forEach(function(item, index) {
+			if (run == 1) return
+			
+			if (m.author.id === item) {
+			if (run == 1) return
+
+			run = 1
+			var roles = m.guild.roles
+
+			var response = "Roles on this Server:\n`"
+
+			roles.forEach(function(item, index) {
+			console.log(item.id)
+			console.log(item.name)
+			
+			response = response + "\n "+ item.id + "     " +item.name
+			
+				
+				
+			})
+		response = response + "\n`"
+			
+m.reply(response)	
+	
+			}
+
+		})
+
+	}
+}
+
 
 c.login(config.token)
