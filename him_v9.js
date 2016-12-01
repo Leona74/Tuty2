@@ -36,6 +36,8 @@ if (enableOptional == true) {
 	var gis = require('g-image-search');
 	var download = require('download');
 	var glitch = require('glitch');
+	var escape = require('escape-html');
+
 }
 
 function delLogs(item, index) {
@@ -66,7 +68,6 @@ function getValue(key, array) {
 
 process.on('uncaughtException', (err) => {
 	console.log(`Caught exception: ${err}`);
-	// c.guilds.get('id',"190081288546418689").channels.get('name','bluebot').sendMessage("ERROR: "+err)
 	fs.open(errorlog, 'a', 666, function(e, id) {
 		fs.write(id, "\r\n" + err, null, 'utf8', function() {
 			fs.close(id, function() {});
@@ -112,9 +113,6 @@ c.once("ready", _ => {
 	console.log("My UserID: " + userID)
 	botname = c.user.username
 
-	
-
-
 	setInterval(function() {
 		upSecs = upSecs + 1
 		if (upSecs >= 60) {
@@ -145,6 +143,15 @@ c.once("ready", _ => {
 
 
 c.on('message', m => {
+	hisID = m.author.id
+		if (m.author.id == userID) {
+		return
+	}
+	if(!m.guild) {
+	m.reply("Hey, i dont work using DMs, please invite me to a Server! https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
+	return
+	}
+
 	datetime = new Date();
 
 	fs.open(logfile, 'a', 666, function(e, id) {
@@ -153,7 +160,6 @@ c.on('message', m => {
 		});
 	});
 
-	hisID = m.author.id
 
 	mutedUsers.forEach(checkMuted)
 
@@ -166,10 +172,8 @@ c.on('message', m => {
 		}
 	}
 
-	if (m.author.id == userID) {
-		return
-	}
 	x = m.cleanContent
+	
 
 	blacklist.forEach(checkBlacklisted)
 
@@ -215,6 +219,7 @@ c.on('message', m => {
 		"catname\n" + prefix + 
 		"dogname\n" + prefix + 
 		"catfact\n" + prefix + 
+		"math\n" + prefix +
 		"choice [CHOICES SEPERATED BY A ',']\n" + prefix + 
 		"pokemongo [Pokemon GO Server Status]	```")
 		admins.forEach(function(item, index) {
@@ -278,7 +283,6 @@ c.on('message', m => {
 
 
 	if (enableOptional == true) {
-
 
 
 		if ((content.split(' ')[0] == prefix + "pokemongo")) {
@@ -362,6 +366,23 @@ c.on('message', m => {
 			fact = catFacts.random()
 			m.channel.sendMessage(fact)
 		}
+		
+		if ((content.split(' ')[0] == prefix + "math")) {
+			q = content.split(' ')[1]
+			
+			q = escape(q)
+			console.log(q)
+			
+			try{
+				res = eval(q)
+			}
+			catch(err){
+				m.channel.sendMessage("Invalid math Question!")
+				return
+				
+			}
+			m.channel.sendMessage(res)
+		}
 
 
 		if ((content.split(' ')[0].match("magnet:"))) {
@@ -415,6 +436,7 @@ c.on('message', m => {
 				}));
 
 		}
+
 	}
 
 
@@ -492,7 +514,6 @@ c.on('message', m => {
 
 
 
-
 	mlow = content
 	if ((mlow.split(' ')[0] == "call") && (mlow.split(' ')[1] == "me")) {
 		if (m.member.hasPermission("CHANGE_NICKNAME")) {
@@ -517,7 +538,6 @@ c.on('message', m => {
 		}
 		return
 	}
-
 
 
 
@@ -836,11 +856,38 @@ if (kicked == 1) return;
 	}
 
 	
+	if (content.split(' ')[0] == prefix + "giverole") {
+		run = 0
+		admins.forEach(function(item, index) {
+			if (run == 1) return
+			
+			if (m.author.id === item) {
+			if (run == 1) return
+
+			run = 1
+			var sb = m.content.substring(10)
+			var roles = m.guild.roles
+			var theRole = roles.find('name', sb)
+
+			
+			
+			m.member.addRole(theRole)
+			console.log("Gave "+m.author.username+" the "+sb+" role.")
+			
+			
+			m.delete()		
+	
+			}
+
+		})
+
+	}
+	
 	if (content.split(' ')[0] == prefix + "timeout") {
 		var theirRoles = m.member.roles
 		timedout = 0
 		theirRoles.forEach(checkUserGroup)
-		
+		var timeout = parseInt("0") 
 	function checkUserGroup(item, array) {
 	if (timedout == 1) return
 	if (item.name == "owner" || item.name == "mods" || item.name == "owner rank" || item.name == "admin" || item.name == "moderator"  && timedout == 0) {
@@ -853,7 +900,7 @@ if (kicked == 1) return;
 				return
 			}
 			if(content.split(' ')[2]) {
-				timeout = content.split(' ')[2]
+			timeout = content.split(' ')[2]
 			}
 			else
 			{
@@ -947,7 +994,42 @@ m.reply(response)
 		})
 
 	}
+	
+
+
+	if (content === prefix + "glitchmypic") {
+m.reply("Please wait while i glitch your pic!")
+
+download(m.author.avatarURL).pipe(fs.createWriteStream('normal.jpg'))
+
+setTimeout(createGlitch,800)
+
+function createGlitch(){
+
+glitch('normal.jpg', 'glitch.jpg', 0.003, 2, 0777);
+m.channel.sendFile("glitch.jpg", "glitch.jpg","Here you go!")
 }
+
+};
+	
+
+
+	
+
+
+
+})
+
+					
+c.on("guildMemberAdd", (member) => {
+	
+guild = member.guild	
+if (guild.id == "190081288546418689")
+		guild.defaultChannel.sendMessage("Welcome <@"+member.id+">! Read "+ guild.channels.find("name", "regeln")+ " if you're German, otherwise "+ guild.channels.find("name", "rules")+ " ! Enjoy your Stay!")
+	
+	if (guild.id == '178890089374547979') 
+		guild.defaultChannel.sendMessage("Welcome <@"+member.id+">! Read "+ guild.channels.find("name", "rules")+ " to make sure you dont break any, please enjoy your stay here!")
+	})
 
 
 c.login(config.token)
