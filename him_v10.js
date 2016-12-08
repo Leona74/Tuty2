@@ -76,6 +76,15 @@ process.on('uncaughtException', (err) => {
 });
 
 
+function logError(text) {
+		fs.open(errorlog, 'a', 666, function(e, id) {
+		fs.write(id, "\r\n" + text, null, 'utf8', function() {
+			fs.close(id, function() {});
+		});
+	});
+}
+
+
 function muteUser(user) {
 	mutedUsers.push(user.id)
 }
@@ -109,6 +118,7 @@ c.once("ready", _ => {
 	c.user.setStatus(userstatus)
 	c.user.setGame(userdisplay)
 	console.log('Yip Yap!')
+	logError("I'm online!")
 	userID = c.user.id
 	console.log("My UserID: " + userID)
 	botname = c.user.username
@@ -139,6 +149,11 @@ c.once("ready", _ => {
 
 })
 
+c.once("disconnect", error => {
+console.log("Disconnected! Following Error Occured:"+error)
+logError("Disconnected, Error: "+error)
+})
+
 
 
 
@@ -149,6 +164,7 @@ c.on('message', m => {
 	}
 	if(!m.guild) {
 	m.reply("Hey, i dont work using DMs, please invite me to a Server! https://discordapp.com/oauth2/authorize?&client_id=200662581042479106&scope=bot")
+	logError("INFO: Got DM'ed, Responded accordingly")
 	return
 	}
 
@@ -201,7 +217,7 @@ c.on('message', m => {
 
 
 	if (content === prefix + "help") {
-		m.reply("\n```Hello there, \nMy Commands are:\n" + prefix + 
+		m.reply("\n```Hello there, My current version is: "+ver+" \nMy Commands are:\n" + prefix + 
 		"help \n" + prefix + 
 		"invite \n" + prefix + 
 		"kick [USER] \n" + prefix + 
@@ -371,18 +387,17 @@ c.on('message', m => {
 			q = content.split(' ')[1]
 			
 			q = escape(q)
-			console.log(q)
+			
+			q = q.replace("π","3.14159265359")
 			
 			try{
 				res = eval(q)
 			}
 			catch(err){
-				m.channel.sendMessage("Invalid math Question!")
-				return
-				
+				res = "Invalid math Question!"
 			}
 			m.channel.sendMessage(res)
-		}
+		return}
 
 
 		if ((content.split(' ')[0].match("magnet:"))) {
@@ -435,7 +450,7 @@ c.on('message', m => {
 					msg.edit("```An Error Occured!```")
 				}));
 
-		}
+		return}
 
 	}
 
@@ -480,7 +495,7 @@ c.on('message', m => {
 
 
 
-	}
+	return}
 	
 	
 	if ((content.split(' ')[0] == prefix + "serverinfo")) {
@@ -508,7 +523,7 @@ c.on('message', m => {
 
 
 
-	}
+	return}
 
 
 
@@ -589,7 +604,7 @@ c.on('message', m => {
 
 		})
 
-	}
+	return}
 		
 		
 	if (content.split(' ')[0] == prefix + "leaveserver") {
@@ -620,7 +635,7 @@ c.on('message', m => {
 
 		})
 
-	}
+	return}
 		
 	
 
@@ -646,7 +661,7 @@ c.on('message', m => {
 			m.reply("You dont have the right Permissions, sorry! ( expected MANAGE_MESSAGES )");
 		}
 		return
-	}
+		}
 
 	
 	if (content.split(' ')[0] == prefix + "ignore") {
@@ -724,7 +739,7 @@ c.on('message', m => {
 			}).then(messages => messages.forEach(delLogs)).catch(console.error)
 			m.reply("cleaned the chat up! (" + cleanuprepeat + ")")
 		}
-	}
+	return}
 
 
 
@@ -777,7 +792,7 @@ if (kicked == 1) return;
 	}
 
 	}
-	}
+	return}
 
 
 	if (content.split(' ')[0] == prefix + "ban") {
@@ -835,7 +850,7 @@ if (kicked == 1) return;
 			banned = 1
 		}
 	}
-	}
+	return}
 
 	
 	if (content.match("<@" + userID + ">")) {
@@ -848,6 +863,7 @@ if (kicked == 1) return;
 
 			if (m.author.id === item) {
 			m.reply("Ok")
+			logError("I'm shutting down!")
 			c.destroy()
 			}
 
@@ -872,7 +888,7 @@ if (kicked == 1) return;
 			
 			
 			m.member.addRole(theRole)
-			console.log("Gave "+m.author.username+" the "+sb+" role.")
+			logError("Gave "+m.author.username+" the "+sb+" role.")
 			
 			
 			m.delete()		
@@ -881,7 +897,7 @@ if (kicked == 1) return;
 
 		})
 
-	}
+	return}
 	
 	if (content.split(' ')[0] == prefix + "timeout") {
 		var theirRoles = m.member.roles
